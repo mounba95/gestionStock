@@ -56,7 +56,7 @@ class TagAwareAdapterTest extends AdapterTestCase
         $pool->save($i3->tag('foo')->tag('baz'));
         $pool->save($foo);
 
-        $pool->invalidateTags(array('bar'));
+        $pool->invalidateTags(['bar']);
 
         $this->assertFalse($pool->getItem('i0')->isHit());
         $this->assertTrue($pool->getItem('i1')->isHit());
@@ -64,11 +64,33 @@ class TagAwareAdapterTest extends AdapterTestCase
         $this->assertTrue($pool->getItem('i3')->isHit());
         $this->assertTrue($pool->getItem('foo')->isHit());
 
-        $pool->invalidateTags(array('foo'));
+        $pool->invalidateTags(['foo']);
 
         $this->assertFalse($pool->getItem('i1')->isHit());
         $this->assertFalse($pool->getItem('i3')->isHit());
         $this->assertTrue($pool->getItem('foo')->isHit());
+
+        $anotherPoolInstance = $this->createCachePool();
+
+        $this->assertFalse($anotherPoolInstance->getItem('i1')->isHit());
+        $this->assertFalse($anotherPoolInstance->getItem('i3')->isHit());
+        $this->assertTrue($anotherPoolInstance->getItem('foo')->isHit());
+    }
+
+    public function testInvalidateCommits()
+    {
+        $pool1 = $this->createCachePool();
+
+        $foo = $pool1->getItem('foo');
+        $foo->tag('tag');
+
+        $pool1->saveDeferred($foo->set('foo'));
+        $pool1->invalidateTags(['tag']);
+
+        $pool2 = $this->createCachePool();
+        $foo = $pool2->getItem('foo');
+
+        $this->assertTrue($foo->isHit());
     }
 
     public function testTagsAreCleanedOnSave()
@@ -81,7 +103,7 @@ class TagAwareAdapterTest extends AdapterTestCase
         $i = $pool->getItem('k');
         $pool->save($i->tag('bar'));
 
-        $pool->invalidateTags(array('foo'));
+        $pool->invalidateTags(['foo']);
         $this->assertTrue($pool->getItem('k')->isHit());
     }
 
@@ -94,7 +116,7 @@ class TagAwareAdapterTest extends AdapterTestCase
         $pool->deleteItem('k');
 
         $pool->save($pool->getItem('k'));
-        $pool->invalidateTags(array('foo'));
+        $pool->invalidateTags(['foo']);
 
         $this->assertTrue($pool->getItem('k')->isHit());
     }
@@ -104,11 +126,11 @@ class TagAwareAdapterTest extends AdapterTestCase
         $pool = $this->createCachePool(10);
 
         $item = $pool->getItem('foo');
-        $item->tag(array('baz'));
+        $item->tag(['baz']);
         $item->expiresAfter(100);
 
         $pool->save($item);
-        $pool->invalidateTags(array('baz'));
+        $pool->invalidateTags(['baz']);
         $this->assertFalse($pool->getItem('foo')->isHit());
 
         sleep(20);
@@ -124,7 +146,7 @@ class TagAwareAdapterTest extends AdapterTestCase
         $pool->save($i->tag('foo'));
 
         $i = $pool->getItem('k');
-        $this->assertSame(array('foo' => 'foo'), $i->getPreviousTags());
+        $this->assertSame(['foo' => 'foo'], $i->getPreviousTags());
     }
 
     public function testPrune()
@@ -151,7 +173,7 @@ class TagAwareAdapterTest extends AdapterTestCase
         $pruneable
             ->expects($this->atLeastOnce())
             ->method('prune')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         return $pruneable;
     }
@@ -168,7 +190,7 @@ class TagAwareAdapterTest extends AdapterTestCase
         $pruneable
             ->expects($this->atLeastOnce())
             ->method('prune')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         return $pruneable;
     }

@@ -55,7 +55,7 @@ class ConstraintValidatorFactoryTest extends TestCase
         $container = new Container();
         $container->set('validator_constraint_service', $validator);
 
-        $factory = new ConstraintValidatorFactory($container, array('validator_constraint_alias' => 'validator_constraint_service'));
+        $factory = new ConstraintValidatorFactory($container, ['validator_constraint_alias' => 'validator_constraint_service']);
         $this->assertSame($validator, $factory->getInstance(new ConstraintAliasStub()));
     }
 
@@ -68,7 +68,7 @@ class ConstraintValidatorFactoryTest extends TestCase
         $constraint
             ->expects($this->exactly(2))
             ->method('validatedBy')
-            ->will($this->returnValue('Fully\\Qualified\\ConstraintValidator\\Class\\Name'));
+            ->willReturn('Fully\\Qualified\\ConstraintValidator\\Class\\Name');
 
         $factory = new ConstraintValidatorFactory(new Container());
         $factory->getInstance($constraint);

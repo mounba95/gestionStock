@@ -15,6 +15,7 @@ use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\GeneratorStrategy\BaseGeneratorStrategy;
 use ProxyManager\Version;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\LazyProxy\PhpDumper\DumperInterface;
 
@@ -46,7 +47,7 @@ class ProxyDumper implements DumperInterface
      */
     public function isProxyCandidate(Definition $definition)
     {
-        return $definition->isLazy() && ($class = $definition->getClass()) && class_exists($class);
+        return $definition->isLazy() && ($class = $definition->getClass()) && (class_exists($class) || interface_exists($class));
     }
 
     /**
@@ -57,7 +58,7 @@ class ProxyDumper implements DumperInterface
         $instantiation = 'return';
 
         if ($definition->isShared()) {
-            $instantiation .= " \$this->services['$id'] =";
+            $instantiation .= sprintf(' $this->%s[%s] =', method_exists(ContainerBuilder::class, 'addClassResource') || ($definition->isPublic() && !$definition->isPrivate()) ? 'services' : 'privates', var_export($id, true));
         }
 
         if (null === $factoryCode) {
@@ -119,11 +120,11 @@ EOF;
      */
     private static function getProxyManagerVersion()
     {
-        if (!\class_exists(Version::class)) {
+        if (!class_exists(Version::class)) {
             return '0.0.1';
         }
 
-        return defined(Version::class.'::VERSION') ? Version::VERSION : Version::getVersion();
+        return \defined(Version::class.'::VERSION') ? Version::VERSION : Version::getVersion();
     }
 
     /**

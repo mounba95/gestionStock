@@ -116,20 +116,6 @@ class CannotBeAutowired
     }
 }
 
-class CannotBeAutowiredForwardOrder
-{
-    public function __construct(CollisionA $a, CollisionInterface $b, CollisionB $c)
-    {
-    }
-}
-
-class CannotBeAutowiredReverseOrder
-{
-    public function __construct(CollisionA $a, CollisionB $c, CollisionInterface $b)
-    {
-    }
-}
-
 class Lille
 {
 }
@@ -181,7 +167,7 @@ class NotGuessableArgumentForSubclass
 }
 class MultipleArguments
 {
-    public function __construct(A $k, $foo, Dunglas $dunglas)
+    public function __construct(A $k, $foo, Dunglas $dunglas, array $bar)
     {
     }
 }

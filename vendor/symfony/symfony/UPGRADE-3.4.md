@@ -72,6 +72,16 @@ DependencyInjection
  * The `ResolveDefinitionTemplatesPass` class is deprecated and will be removed in 4.0.
    Use the `ResolveChildDefinitionsPass` class instead.
 
+ * Unless you're using a custom autoloader, you should enable the `container.dumper.inline_class_loader`
+   parameter. This can drastically improve DX by reducing the time to load classes
+   when the `DebugClassLoader` is enabled. If you're using `FrameworkBundle`, this
+   performance improvement will also impact the "dev" environment:
+
+   ```yml
+   parameters:
+       container.dumper.inline_class_loader: true
+   ```
+
 Debug
 -----
 
@@ -114,7 +124,7 @@ Form
    ```php
    class MyTimezoneType extends TimezoneType
    {
-       public function loadChoices()
+       public function loadChoiceList()
        {
            // override the method
        }
@@ -335,6 +345,9 @@ Security
  * The `GuardAuthenticatorInterface` has been deprecated and will be removed in 4.0.
    Use `AuthenticatorInterface` instead.
 
+ * When extending `AbstractGuardAuthenticator` it's deprecated to return `null` from `getCredentials()`.
+   Return `false` from `supports()` if no credentials available.
+
 SecurityBundle
 --------------
 
@@ -400,6 +413,14 @@ TwigBridge
 
  * deprecated the `Symfony\Bridge\Twig\Form\TwigRenderer` class, use the `FormRenderer`
    class from the Form component instead
+
+    * the service `twig.form.renderer` is now an instance of `FormRenderer`.
+      So you might have to adjust your type-hints to `FormRendererInterface` if you are still relying on
+      the `TwigRendererInterface` which was deprecated in Symfony 3.2
+
+    * retrieving the Renderer runtime from the twig environment via
+      `$twig->getRuntime('Symfony\Bridge\Twig\Form\TwigRenderer')` is not working anymore
+       and should be replaced with `$twig->getRuntime('Symfony\Component\Form\FormRenderer')` instead
 
  * deprecated `Symfony\Bridge\Twig\Command\DebugCommand::set/getTwigEnvironment` and the ability
    to pass a command name as first argument

@@ -1,5 +1,5 @@
 {
-    "Version": "2.1.37.1",
+    "Version": "2.1.48.42",
     "Names": {
         "ADP": [
             "ADP",
@@ -192,10 +192,6 @@
         "BRR": [
             "BRR",
             "brazilski cruzeiro"
-        ],
-        "BRZ": [
-            "BRZ",
-            "BRZ"
         ],
         "BSD": [
             "BSD",
@@ -637,10 +633,6 @@
             "MAF",
             "marokanski franak"
         ],
-        "MCF": [
-            "MCF",
-            "MCF"
-        ],
         "MDC": [
             "MDC",
             "moldavski kupon"
@@ -683,6 +675,10 @@
         ],
         "MRO": [
             "MRO",
+            "mauritanijska ouguja (1973. – 2017.)"
+        ],
+        "MRU": [
+            "MRU",
             "mauritanijska ouguja"
         ],
         "MTL": [
@@ -915,6 +911,10 @@
         ],
         "STD": [
             "STD",
+            "dobra Svetog Tome i Principa (1977–2017)"
+        ],
+        "STN": [
+            "STN",
             "dobra Svetog Tome i Principa"
         ],
         "SUR": [
@@ -1035,6 +1035,10 @@
         ],
         "VEF": [
             "VEF",
+            "venezuelanski bolivar (2008. – 2018.)"
+        ],
+        "VES": [
+            "VES",
             "venezuelanski bolivar"
         ],
         "VND": [

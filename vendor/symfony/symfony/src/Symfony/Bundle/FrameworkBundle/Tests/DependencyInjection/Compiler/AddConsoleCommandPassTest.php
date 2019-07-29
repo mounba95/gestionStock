@@ -16,7 +16,6 @@ use Symfony\Bundle\FrameworkBundle\DependencyInjection\Compiler\AddConsoleComman
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * @group legacy
@@ -53,15 +52,15 @@ class AddConsoleCommandPassTest extends TestCase
         }
 
         $this->assertTrue($container->hasParameter('console.command.ids'));
-        $this->assertSame(array($alias => $id), $container->getParameter('console.command.ids'));
+        $this->assertSame([$alias => $id], $container->getParameter('console.command.ids'));
     }
 
     public function visibilityProvider()
     {
-        return array(
-            array(true),
-            array(false),
-        );
+        return [
+            [true],
+            [false],
+        ];
     }
 
     /**
@@ -121,9 +120,5 @@ class AddConsoleCommandPassTest extends TestCase
 }
 
 class MyCommand extends Command
-{
-}
-
-class ExtensionPresentBundle extends Bundle
 {
 }

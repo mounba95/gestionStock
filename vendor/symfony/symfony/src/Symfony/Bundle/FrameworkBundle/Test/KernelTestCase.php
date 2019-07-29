@@ -23,6 +23,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 abstract class KernelTestCase extends TestCase
 {
+    use KernelShutdownOnTearDownTrait;
+
     protected static $class;
 
     /**
@@ -52,8 +54,8 @@ abstract class KernelTestCase extends TestCase
 
         $dir = static::getPhpUnitCliConfigArgument();
         if (null === $dir &&
-            (is_file(getcwd().DIRECTORY_SEPARATOR.'phpunit.xml') ||
-            is_file(getcwd().DIRECTORY_SEPARATOR.'phpunit.xml.dist'))) {
+            (is_file(getcwd().\DIRECTORY_SEPARATOR.'phpunit.xml') ||
+            is_file(getcwd().\DIRECTORY_SEPARATOR.'phpunit.xml.dist'))) {
             $dir = getcwd();
         }
 
@@ -63,7 +65,7 @@ abstract class KernelTestCase extends TestCase
         }
 
         if (!is_dir($dir)) {
-            $dir = dirname($dir);
+            $dir = \dirname($dir);
         }
 
         return $dir;
@@ -90,11 +92,11 @@ abstract class KernelTestCase extends TestCase
                 $dir = realpath($reversedArgs[$argIndex - 1]);
                 break;
             } elseif (0 === strpos($testArg, '--configuration=')) {
-                $argPath = substr($testArg, strlen('--configuration='));
+                $argPath = substr($testArg, \strlen('--configuration='));
                 $dir = realpath($argPath);
                 break;
             } elseif (0 === strpos($testArg, '-c')) {
-                $argPath = substr($testArg, strlen('-c'));
+                $argPath = substr($testArg, \strlen('-c'));
                 $dir = realpath($argPath);
                 break;
             }
@@ -141,7 +143,7 @@ abstract class KernelTestCase extends TestCase
         $finder = new Finder();
         $finder->name('*Kernel.php')->depth(0)->in($dir);
         $results = iterator_to_array($finder);
-        if (!count($results)) {
+        if (!\count($results)) {
             throw new \RuntimeException('Either set KERNEL_DIR in your phpunit.xml according to https://symfony.com/doc/current/book/testing.html#your-first-functional-test or override the WebTestCase::createKernel() method.');
         }
 
@@ -158,7 +160,7 @@ abstract class KernelTestCase extends TestCase
      *
      * @return KernelInterface A KernelInterface instance
      */
-    protected static function bootKernel(array $options = array())
+    protected static function bootKernel(array $options = [])
     {
         static::ensureKernelShutdown();
 
@@ -178,7 +180,7 @@ abstract class KernelTestCase extends TestCase
      *
      * @return KernelInterface A KernelInterface instance
      */
-    protected static function createKernel(array $options = array())
+    protected static function createKernel(array $options = [])
     {
         if (null === static::$class) {
             static::$class = static::getKernelClass();
@@ -208,7 +210,7 @@ abstract class KernelTestCase extends TestCase
     }
 
     /**
-     * Shuts the kernel down if it was used in the test.
+     * Shuts the kernel down if it was used in the test - called by the tearDown method by default.
      */
     protected static function ensureKernelShutdown()
     {
@@ -219,13 +221,5 @@ abstract class KernelTestCase extends TestCase
                 $container->reset();
             }
         }
-    }
-
-    /**
-     * Clean up Kernel usage in this test.
-     */
-    protected function tearDown()
-    {
-        static::ensureKernelShutdown();
     }
 }

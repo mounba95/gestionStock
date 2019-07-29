@@ -12,6 +12,7 @@
 namespace Symfony\Bundle\FrameworkBundle\Command;
 
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\Console\Exception\LogicException;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Style\StyleInterface;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
@@ -28,8 +29,8 @@ abstract class AbstractConfigCommand extends ContainerDebugCommand
     protected function listBundles($output)
     {
         $title = 'Available registered bundles with their extension alias if available';
-        $headers = array('Bundle name', 'Extension alias');
-        $rows = array();
+        $headers = ['Bundle name', 'Extension alias'];
+        $rows = [];
 
         $bundles = $this->getApplication()->getKernel()->getBundles();
         usort($bundles, function ($bundleA, $bundleB) {
@@ -38,7 +39,7 @@ abstract class AbstractConfigCommand extends ContainerDebugCommand
 
         foreach ($bundles as $bundle) {
             $extension = $bundle->getContainerExtension();
-            $rows[] = array($bundle->getName(), $extension ? $extension->getAlias() : '');
+            $rows[] = [$bundle->getName(), $extension ? $extension->getAlias() : ''];
         }
 
         if ($output instanceof StyleInterface) {
@@ -51,6 +52,9 @@ abstract class AbstractConfigCommand extends ContainerDebugCommand
         }
     }
 
+    /**
+     * @return ExtensionInterface
+     */
     protected function findExtension($name)
     {
         $bundles = $this->initializeBundles();
@@ -98,7 +102,7 @@ abstract class AbstractConfigCommand extends ContainerDebugCommand
             $message .= sprintf("\n\nDid you mean \"%s\"?", $guess);
         }
 
-        throw new \LogicException($message);
+        throw new LogicException($message);
     }
 
     public function validateConfiguration(ExtensionInterface $extension, $configuration)
@@ -108,7 +112,7 @@ abstract class AbstractConfigCommand extends ContainerDebugCommand
         }
 
         if (!$configuration instanceof ConfigurationInterface) {
-            throw new \LogicException(sprintf('Configuration class "%s" should implement ConfigurationInterface in order to be dumpable', get_class($configuration)));
+            throw new \LogicException(sprintf('Configuration class "%s" should implement ConfigurationInterface in order to be dumpable', \get_class($configuration)));
         }
     }
 

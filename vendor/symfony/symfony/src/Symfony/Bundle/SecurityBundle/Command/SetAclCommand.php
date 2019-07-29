@@ -14,6 +14,7 @@ namespace Symfony\Bundle\SecurityBundle\Command;
 @trigger_error(sprintf('Class "%s" is deprecated since Symfony 3.4 and will be removed in 4.0. Use Symfony\Bundle\AclBundle\Command\SetAclCommand instead.', SetAclCommand::class), E_USER_DEPRECATED);
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -24,8 +25,8 @@ use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Exception\AclAlreadyExistsException;
-use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 use Symfony\Component\Security\Acl\Model\MutableAclProviderInterface;
+use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 
 /**
  * Sets ACL for objects.
@@ -124,12 +125,12 @@ EOF
         }
 
         // Parse arguments
-        $objectIdentities = array();
+        $objectIdentities = [];
         $maskBuilder = $this->getMaskBuilder();
         foreach ($input->getArgument('arguments') as $argument) {
             $data = explode(':', $argument, 2);
 
-            if (count($data) > 1) {
+            if (\count($data) > 1) {
                 $objectIdentities[] = new ObjectIdentity($data[1], strtr($data[0], '/', '\\'));
             } else {
                 $maskBuilder->add($data[0]);
@@ -144,18 +145,18 @@ EOF
         $classScopeOption = $input->getOption('class-scope');
 
         if (empty($userOption) && empty($roleOption)) {
-            throw new \InvalidArgumentException('A Role or a User must be specified.');
+            throw new InvalidArgumentException('A Role or a User must be specified.');
         }
 
         // Create security identities
-        $securityIdentities = array();
+        $securityIdentities = [];
 
         if ($userOption) {
             foreach ($userOption as $user) {
                 $data = explode(':', $user, 2);
 
-                if (1 === count($data)) {
-                    throw new \InvalidArgumentException('The user must follow the format "Acme/MyUser:username".');
+                if (1 === \count($data)) {
+                    throw new InvalidArgumentException('The user must follow the format "Acme/MyUser:username".');
                 }
 
                 $securityIdentities[] = new UserSecurityIdentity($data[1], strtr($data[0], '/', '\\'));

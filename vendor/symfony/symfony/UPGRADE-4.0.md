@@ -230,11 +230,22 @@ DependencyInjection
    supported.
 
  * The ``strict`` attribute in service arguments has been removed.
-   The attribute is ignored since 3.0, so you can simply remove it.
+   The attribute is ignored since 3.0, you can remove it.
 
  * Top-level anonymous services in XML are no longer supported.
 
  * The `ExtensionCompilerPass` has been moved to before-optimization passes with priority -1000.
+
+ * In 3.4, parameter `container.dumper.inline_class_loader` was introduced. Unless
+   you're using a custom autoloader, you should enable this parameter. This can
+   drastically improve DX by reducing the time to load classes when the `DebugClassLoader`
+   is enabled. If you're using `FrameworkBundle`, this performance improvement will
+   also impact the "dev" environment:
+
+   ```yml
+   parameters:
+       container.dumper.inline_class_loader: true
+   ```
 
 DoctrineBridge
 --------------
@@ -286,19 +297,17 @@ Form
    `ArrayAccess` in `ResizeFormListener::preSubmit` method has been removed.
 
  * Using callable strings as choice options in ChoiceType is not supported
-   anymore in favor of passing PropertyPath instances.
+   anymore.
 
    Before:
 
    ```php
-   'choice_value' => new PropertyPath('range'),
    'choice_label' => 'strtoupper',
    ```
 
    After:
 
    ```php
-   'choice_value' => 'range',
    'choice_label' => function ($choice) {
        return strtoupper($choice);
    },
@@ -357,7 +366,7 @@ Form
    ```php
    class MyTimezoneType extends TimezoneType
    {
-       public function loadChoices()
+       public function loadChoiceList()
        {
            // override the method
        }
@@ -747,6 +756,9 @@ Security
 
  * The `GuardAuthenticatorInterface` interface has been removed.
    Use `AuthenticatorInterface` instead.
+
+ * When extending `AbstractGuardAuthenticator` getCredentials() cannot return
+   `null` anymore, return false from `supports()` if no credentials available instead.
 
 SecurityBundle
 --------------
