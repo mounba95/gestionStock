@@ -1,0 +1,49 @@
+{% extends "::base.html.twig" %}
+    {%block header%}
+      <section class="content-header">
+      <h1>
+        Stock
+        <small></small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i>Accueil</a></li>
+        <li><a href="{{path('stock_ajouter')}}">Stock</a></li>
+      </ol>
+    </section>
+    {%endblock%}
+    {%block body%}
+         <div class="box-header box box-success">
+             <h3 class="box-title">Historique d'approvionement</h3>
+   
+<div class="pull-right" >
+                                <a href="{{path('stock_liste')}}"  class="btn bg-olive btn-flat margin">Liste produit en stock</a>
+                            </div>  
+    </div>
+        <div class="box-body">
+            <table id="table_pays" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>N°</th>
+                        <th>Fournisseur</th>
+                        <th>Produit</th>
+                        <th>Quantite d'entrée</th>
+                        <th>Prix d'éntré</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for liste in detailStock %}
+                        <tr>
+                            <td>{{ liste.id }}</td>
+                            <td>{{ liste.fournisseur.nomFournisseur }}</td>
+                            <td>{{ liste.stock.produit.nomProduit }}</td>
+                            <td>{{ liste.quantiteProduitFournisseur }}</td>
+                            <td>{{ liste.prixProduitFournisseur }}</td>
+                            <td>{{ liste.dateApprovisioner |date('d-m-Y H:i:s')}}</td>
+                        </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+
+{% endblock %}

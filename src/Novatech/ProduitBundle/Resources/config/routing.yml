@@ -1,0 +1,37 @@
+produit_type_liste:
+    path:     /liste_produit_type
+    defaults: { _controller: ProduitBundle:TypeProduit:listeTypeProduit }
+
+produit_type_ajouter:
+    path:     /ajouter_produit_type
+    defaults: { _controller: ProduitBundle:TypeProduit:addTypeProduit }
+
+produit_type_modifier:
+    path:     /edit_produit_type/{id}
+    defaults: { _controller: ProduitBundle:TypeProduit:editTypeProduit }
+
+produit_type_supprimer:
+    path:     /delete_produit_type/{id}
+    defaults: { _controller: ProduitBundle:TypeProduit:deleteTypeProduit }
+
+produit_type_detail:
+    path:     /detail_produit_type/{id}
+    defaults: { _controller: ProduitBundle:TypeProduit:detailTypeProduit }
+
+      
+produit_liste:
+    path:     /liste_produit
+    defaults: { _controller: ProduitBundle:Produit:listeProduit }
+
+produit_ajouter:
+    path:     /ajouter_produit
+    defaults: { _controller: ProduitBundle:Produit:addProduit }
+
+produit_modifier:
+    path:     /edit_produit/{id}
+    defaults: { _controller: ProduitBundle:Produit:editProduit }
+
+produit_supprimer:
+    path:     /delete_produit/{id}
+    defaults: { _controller: ProduitBundle:Produit:deleteProduit }
+

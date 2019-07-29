@@ -1,0 +1,30 @@
+userManagerBundle\Entity\User:
+    type: entity
+    table: null
+    repositoryClass: userManagerBundle\Repository\UserRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        nom:
+            type: string
+            length: 255
+        prenom:
+            type: string
+            length: 255
+        username:
+            type: string
+            length: 255
+        password:
+            type: string
+            length: 255
+        roles:
+            type: array
+        status:
+            type: integer
+        telephone:
+            type: integer
+    lifecycleCallbacks: {  }

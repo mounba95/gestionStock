@@ -1,0 +1,61 @@
+{% extends "::base.html.twig" %}
+    {%block header%}
+      <section class="content-header">
+      <h1>
+        Devis
+        <small></small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i>Accueil</a></li>
+        <li><a href="{{path('produit_ajouter')}}">Devis</a></li>
+      </ol>
+    </section>
+    {%endblock%}
+    {%block body%}
+         <div class="box-header box box-success">
+             <h3 class="box-title">Listes des ventes</h3>
+   
+<div class="pull-right" >
+                                <a href="{{path('achat_ajouter')}}"  class="btn bg-olive btn-flat margin">Ajouter Devis</a>
+                            </div>  
+        </div>
+
+        <div class="box-body">
+            <table id="table_devis" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Reference </th>
+                        <th>Offre</th>
+                        <th>Modifier</th>
+                        <th>Detail</th>
+                        <th>Supprimer</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Reference </th>
+                        <th>Offre</th>
+                        <th>Modifier</th>
+                        <th>Detail</th>
+                        <th>Supprimer</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    {% for liste in devisListe %}
+                        <tr>
+                            
+                            <td>{{ liste.referenceFacture }}</td>
+                            <td>{{ liste.offre }}</td>
+                            <td><a class="btn btn-primary" href="{{ path('achat_modifier', {'id': liste.id}) }}">Modifier</a></td>
+
+                            <td><a class="btn btn-info" href="{{ path('produitachat_ajouter', {'idFacture': liste.id}) }}" >Detail</a></td>
+
+                            <td><a class="btn btn-danger" href="{{ path('produitachat_ajouter', {'idFacture': liste.id}) }}"  onclick="return confirm('Voulez-vous supprimer cet enregistrement?');" >Supprimer</a></td>
+          
+                        </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+
+{% endblock %}

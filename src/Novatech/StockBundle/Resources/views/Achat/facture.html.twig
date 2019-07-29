@@ -1,0 +1,177 @@
+{% extends "::base.html.twig" %}
+    {%block header%}
+        <section class="content-header">
+            <h1>
+                Facture
+                <small></small>
+                <div class="pull-right">
+                    <a href="{{path('produitachat_ajouter', {'idFacture': idFacture})}}" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Retour</a>
+                    <a href="" class="btn btn-info"  onclick="imprimer_page()"><i class="fa fa-print"></i> Imprimer</a>
+                </div>
+            </h1>
+
+        </section>
+    {%endblock%}
+    {%block body%}
+        <script type="text/javascript">
+            function imprimer_page()
+            {
+                window.print() ;
+            }
+        </script>
+        <div>
+            <table>
+                <tr style="align-content: center;">
+                    <th style="width: 180px;"><img src="{{ asset('uploads/logos/'~information.path) }}" width="220px" height="65px" /></th>
+                    <td><b><h4 style="color: #039be5;">{{ information.slogant }}</h4></b></td>
+                </tr>
+            </table>
+
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <table class="table-sm" border="1" width="50%" >
+                    <tr>
+                        <th style="padding: 3px;"> FACTURE</th>
+                        <td style="padding: 3px;"> <b>N° {{ facture.referenceFacture }}</b></td>
+                    </tr>
+                    <tr>
+                        <th style="padding: 3px;"> DATE</th>
+                        <td style="padding: 3px;"> <p>{{ facture.dateFacture |date('d-m-Y H:i:s')}}</p></td>
+                    </tr>
+                    <tr>
+                        <th style="padding: 3px;"> OFFRE</th>
+                        <td style="padding: 3px;"> <p>{{ facture.offre }}</p></td>
+                    </tr>
+                </table>
+                <br>
+                {% if client == 'null' %}
+                    <div class="pull-left" style="border-color:#0c0c; padding: 3px; width: 50%;" >
+                        <p>Client :</p>
+                    </div>
+                {% else %}
+                    <div class="pull-left" style="border:solid 1px;width: 50%; padding: 3px;" >
+                        <b>DESTINATAIRE</b>
+                        <p>Nom :{{ client.nomClient }}</p>
+                        <p>Réference :<b> {{ client.referenceClient }} </b></p>
+                        <p>Téléphone : {{ client.numeroClient }} </p>
+                        <p>Adresse :{{ client.adresseClient }}</p>
+                    </div>
+                {% endif %}
+
+            </div>
+
+            <!-- /.box-header -->
+            <div class="box-body">
+                <br>
+                <table class="table" border="1">
+                    <thead>
+                    <tr style="background-color: #7a869d;">
+                        <th>Désignation</th>
+                        <th>Quantité</th>
+                        <th>Prix unitaire</th>
+                        <th>Montant</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for liste in produitAchatListe %}
+                        <tr>
+                            <td>{{ liste.nomProduit }}</td>
+                            <td>{{ liste.quantiteAchat }}</td>
+                            <td>{{ liste.prixProduit }}</td>
+                            <td>{{ liste.prixProduit * liste.quantiteAchat}}</td>
+
+                        </tr>
+                    {%endfor%}
+
+                    </tbody>
+                </table>
+
+                <div class="row">
+                    <!-- accepted payments column -->
+                    <div class="col-xs-6">
+
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-xs-6">
+                        <br>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tr>
+                                    <th>Total HT</th>
+                                    <td></td>
+                                    <td></td>
+                                    <th>{{ montantTotal }} F CFA</th>
+                                </tr>
+                                {% if remise %}
+                                <tr>
+                                    <th>Remise</th>
+                                    <td></td>
+                                    <td></td>
+                                    <th>{{ remise }}%</th>
+                                </tr>
+                                <tr>
+                                    <th>Montant de Remise</th>
+                                    <td></td>
+                                    <td></td>
+                                    <th>{{ montantRemise }} F CFA</th>
+                                </tr>
+                                <tr>
+                                    <th>Montant HC après Remise</th>
+                                    <td></td>
+                                    <td></td>
+                                    <th>{{ nouveauMontantTotal }} F CFA</th>
+                                </tr>
+                                {% endif %}
+                                <tr>
+                                    <th>
+                                        TVA {% if tva == 100 %}
+                                        (<b> 0%</b>)
+                                        {% else %}
+                                       (  {{ tva }}% ):
+                                    </th>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        {{ montantTva }} F CFA
+                                    </td>
+                                    {% endif %}
+                                </tr>
+                                <tr>
+                                <th>Total TTC</th>
+                                <td></td>
+                                <td></td>
+                                <th>{{ montantTTC }} F CFA</th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+                <br>
+                <div>
+                    <table class="table">
+                        <tr>
+                            <td style="border-color: #0c0c0c; width: 50%">
+                                Arrétez la présente facture à la somme de : <b>{{ montantTTCLettre }} CFA</b>
+                                <br><br><br><br><br>
+                            </td>
+                            <td style="border-color:  #0c0c0c; width: 50%">
+                                LE DIRECTEUR GÉNÉRAL <br> <b>{{ information.DG }}</b>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+
+            </div>
+
+        </div>
+            <div class="fixed fixed-top" style="text-align: center; bottom: 0px;">
+                <b>Compte bancaire : {{ information.compteBancaire }} </b><br>
+                Adresse : {{ information.adresse }} - BP :{{ information.codePostal }}  - Site web : {{ information.siteweb }}<br>
+                Tel : {{ information.cel }} / {{ information.tel }} <br>
+                Email : {{ information.email }}
+            </div>
+        </div>
+    {% endblock %}

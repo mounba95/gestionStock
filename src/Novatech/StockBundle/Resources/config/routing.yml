@@ -1,0 +1,157 @@
+stock_liste:
+    path:     /liste_stock
+    defaults: { _controller: StockBundle:Stock:listeStock }
+
+stock_ajouter:
+    path:     /ajouter_stock
+    defaults: { _controller: StockBundle:Stock:addStock }
+
+stock_modifier:
+    path:     /edit_stock/{id}
+    defaults: { _controller: StockBundle:Stock:editStock }
+
+stock_supprimer:
+    path:     /delete_stock/{id}
+    defaults: { _controller: StockBundle:Stock:deleteStock }
+
+stock_detail:
+    path:     /detail_stock/{id}
+    defaults: { _controller: StockBundle:Stock:deltailStock }
+
+approvisioner_liste:
+    path:     /liste_approvisioner
+    defaults: { _controller: StockBundle:StockFournisseur:listeApprovisioner }
+
+achat_ajouter:
+    path:     /ajouter_achat
+    defaults: { _controller: StockBundle:Achat:addAchat }
+
+achat_modifier:
+    path:     /modifier_devis/{id}
+    defaults: { _controller: StockBundle:Achat:editAchat }
+
+achat_facture_modifier:
+    path:     /modifier_facture/{id}
+    defaults: { _controller: StockBundle:Achat:editAchatFacture }
+
+achat_liste:
+    path:     /liste_devis
+    defaults: { _controller: StockBundle:Achat:listeachat }
+
+produitachat_ajouter:
+    path:     /ajouterproduit_devis/{idFacture}
+    defaults: { _controller: StockBundle:Achat:addProduitAchat }
+
+produitachat_retirer:
+    path:     /retirerproduit_devis/{idAchat}
+    defaults: { _controller: StockBundle:Achat:removeProduitAchat }
+
+imprimerachat_ajouter:
+    path:     /imprimer_devis/{idFacture}
+    defaults: { _controller: StockBundle:Achat:imprimerDevis }
+
+imprimer_facture:
+    path:     /imprimer_facture/{idFacture}
+    defaults: { _controller: StockBundle:Achat:imprimerFacture }
+
+facture_imprimer:
+    path:     /facture_imprimer/{idFacture}
+    defaults: { _controller: StockBundle:Achat:factureImprimer }
+
+clientfacture_ajouter:
+    path:     /ajouterclient_devis/{idFacture}
+    defaults: { _controller: StockBundle:Achat:ajoutClientFacture }
+
+remise_devis_ajouter:
+    path:     /remise_devis/{idFacture}
+    defaults: { _controller: StockBundle:Achat:ajoutremiseFacture }
+
+tva_devis_ajouter:
+    path:     /tva_devis/{idFacture}
+    defaults: { _controller: StockBundle:Achat:ajouttvaFacture }
+
+vente_liste:
+    path:     /liste_vente
+    defaults: { _controller: StockBundle:Achat:listeVente }
+
+vente_ajouter:
+    path:     /ajouter_vente
+    defaults: { _controller: StockBundle:Achat:addVente }
+
+vente_modifier:
+    path:     /edit_vente/{id}
+    defaults: { _controller: StockBundle:Achat:editVente }
+
+vente_supprimer:
+    path:     /delete_vente/{id}
+    defaults: { _controller: StockBundle:Achat:deleteVente }
+
+vente_detail:
+    path:     /detail_vente/{id}
+    defaults: { _controller: StockBundle:Achat:deltailVente }
+
+produitvente_ajouter:
+    path:     /ajouterproduit_vente/{idVente}
+    defaults: { _controller: StockBundle:Achat:addProduitVente }
+
+produitvente_retirer:
+    path:     /retirerproduit_vente/{idVente}
+    defaults: { _controller: StockBundle:Achat:removeProduitVente }
+
+imprimervente_ajouter:
+    path:     /imprimer_vente/{idVente}
+    defaults: { _controller: StockBundle:Achat:imprimerVente }
+
+clientvente_ajouter:
+    path:     /ajouterclient_vente/{idVente}
+    defaults: { _controller: StockBundle:Achat:ajoutClientVente }
+
+remise_vente_ajouter:
+    path:     /remise_vente/{idVente}
+    defaults: { _controller: StockBundle:Achat:ajoutremiseVente }
+
+tva_vente_ajouter:
+    path:     /tva_client/{idVente}
+    defaults: { _controller: StockBundle:Achat:ajouttvaVente }
+
+vente_valider:
+    path:     /valider_vente/{idVente}
+    defaults: { _controller: StockBundle:Achat:validerVente }
+
+vente_imprimerrecu:
+    path:     /imprimerrecu_vente/{idVente}
+    defaults: { _controller: StockBundle:Achat:imprimerRecuVente }
+
+vente_rapport_all:
+    path:     /rapport_vente
+    defaults: { _controller: StockBundle:Achat:rapportVenteAll }
+
+vente_rapport_by_user:
+    path:     /rapport_vente_byuser
+    defaults: { _controller: StockBundle:Achat:rapportVenteByUser }
+
+
+tva_index:
+    path:     /tva
+    defaults: { _controller: "StockBundle:Tva:index" }
+    methods:  GET
+
+tva_show:
+    path:     /{id}/show
+    defaults: { _controller: "StockBundle:Tva:show" }
+    methods:  GET
+
+tva_new:
+    path:     /newtva
+    defaults: { _controller: "StockBundle:Tva:new" }
+    methods:  [GET, POST]
+
+tva_edit:
+    path:     /{id}/edittva
+    defaults: { _controller: "StockBundle:Tva:edit" }
+    methods:  [GET, POST]
+
+tva_delete:
+    path:     /{id}/deletetva
+    defaults: { _controller: "StockBundle:Tva:delete" }
+    methods:  DELETE

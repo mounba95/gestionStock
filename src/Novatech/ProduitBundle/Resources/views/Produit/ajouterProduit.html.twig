@@ -1,0 +1,90 @@
+{% extends "::base.html.twig" %}
+    {%block header%}
+      <section class="content-header">
+      <h1>
+        Produit
+        <small></small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i>Accueil</a></li>
+        
+      </ol>
+    </section>
+    {%endblock%}
+    {%block body%}
+                           {%if result == 3 %}
+                             <div class="alert alert-default alert-dismissible">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                    <strong>Veuillez remplir les champs pour ajouter un nouveau produit</strong>
+                                </div>                          
+                                
+                             {% elseif result == 2 %}
+                                <div class="alert alert-success alert-dismissible">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                    <strong>Enregistrement éffectué avec succée.</strong> 
+                                </div>
+                            {% elseif result == 1 %}
+                                <div class="alert alert-danger alert-dismissible">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                    <strong>Cet enregistrement existe déja.</strong> 
+                                </div>
+                            {% endif %}
+           <div class="box box-success">
+             <div class="box-header with-border">
+              <h3 class="box-title">Ajouter Produit</h3>
+            
+<div class="pull-right" >
+                                <a href="{{path('produit_liste')}}"  class="btn bg-olive btn-flat margin">liste des produits</a>
+                            </div>  
+            </div>
+  
+            <!-- /.box-header -->
+          
+            <div class="box-body">
+              <div class="row">
+                 <div class="col-md-6">
+                  <div class="form-group">
+                  <label>Type</label>
+                  {{ form_start(form) }}
+                            {{ form_widget(form.typeProduit, {'attr': {'class': 'form-control', 'placeholder':'nom du type'} }) }}
+                  </div>
+                  <!-- /.form-group -->
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                  <label>Nom</label>
+                  {{ form_start(form) }}
+                            {{ form_widget(form.nomProduit, {'attr': {'class': 'form-control', 'placeholder':'nom produit'} }) }}
+                  </div>
+                  <!-- /.form-group -->
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                  <label>Description</label>
+                            {{ form_widget(form.descriptionProduit, {'attr': {'class': 'form-control', 'placeholder':'description du type'} }) }}
+                            <div class="pull-right" >
+                                                          
+                               <a href="{{path('produit_liste')}}"  class="btn bg-maroon btn-flat">Annuler</a>
+                               <input type="submit" value="valider" class="btn bg-olive btn-flat margin"/>
+                                </div>  
+                            {{ form_end(form) }}
+                  </div>
+                  <!-- /.form-group -->
+                 
+                             
+                             
+
+                </div>
+               
+                <!-- /.col -->
+              <!-- /.row -->
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              
+            </div>
+        </div>
+        </div>
+
+{% endblock %}

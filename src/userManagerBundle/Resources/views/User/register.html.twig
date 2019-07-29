@@ -1,0 +1,97 @@
+{% extends "::base.html.twig" %}
+    {%block header%}
+        <section class="content-header">
+            <h1>
+                Utilisateurs
+                <small>Ajout d'un utilisateur</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i>Accueil</a></li>
+
+            </ol>
+        </section>
+    {%endblock%}
+    {%block body%}
+
+        <div class="box box-success">
+            <div class="box-header with-border">
+                <h3 class="box-title">Ajouter utilisateur</h3>
+
+                <div class="pull-right" >
+                    <a href="{{ path('user_liste') }}"  class="btn bg-olive btn-flat margin">Liste des utilisateurs</a>
+                </div>
+            </div>
+
+            <!-- /.box-header -->
+
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Nom</label>
+                            {{ form_start(form) }}
+                            {{ form_errors(form) }}
+                            {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'placeholder':'nom du client'} }) }}
+                        </div>
+                        <!-- /.form-group -->
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Prenom</label>
+                            {{ form_widget(form.prenom, {'attr': {'class': 'form-control', 'placeholder':'adresse email client'} }) }}
+                        </div>
+                        <!-- /.form-group -->
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Pseudo</label>
+                            {{ form_widget(form.username, {'attr': {'class': 'form-control', 'placeholder':'adresse email client'} }) }}
+                        </div>
+                        <!-- /.form-group -->
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Téléphone</label>
+                            {{ form_widget(form.telephone, {'attr': {'class': 'form-control', 'placeholder':'adresse email client'} }) }}
+                        </div>
+                        <!-- /.form-group -->
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Mot de passe</label>
+                            {{ form_widget(form.password, {'attr': {'class': 'form-control', 'placeholder':'mot de passe','min':'0'} }) }}
+                        </div>
+                        <!-- /.form-group -->
+                    </div>
+                        <!-- /.form-group -->
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Confirmez mot de passe</label>
+                            {{ form_widget(form.confirm_password, {'attr': {'class': 'form-control', 'placeholder':'confirmez votre mot de passe '} }) }}
+                            <div style="color: red">
+                            {{ form_errors(form.confirm_password) }}
+                            </div>
+                        </div>
+                        <!-- /.form-group -->
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Rôle</label>
+                            {{ form_widget(form.roles) }}
+                            <div class="pull-right" >
+                                <input type="submit" value="valider" class="btn bg-olive btn-flat margin"/>
+                            </div>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>                    <!-- /.col -->
+                    <!-- /.row -->
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+
+                </div>
+            </div>
+        </div>
+
+    {% endblock %}

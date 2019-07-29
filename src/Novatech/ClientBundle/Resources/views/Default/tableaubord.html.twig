@@ -1,0 +1,21 @@
+{% extends "::base.html.twig" %}
+    {%block header%}
+        <section class="content-header">
+            <h1>
+                Bienvenue
+                <small></small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i>Accueil</a></li>
+            </ol>
+        </section>
+    {%endblock%}
+    {%block body%}
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+     <img src="{{ asset('templates/accueil.jpg')}}" class="user-image" alt="User Image">
+     </div>
+{% endblock %}
+{%block partieJs%}
+
+
+{%endblock%}

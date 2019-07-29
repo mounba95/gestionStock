@@ -1,0 +1,158 @@
+{% extends "::base.html.twig" %}
+    {%block header%}
+      <section class="content-header">
+      <h1>
+        Vente
+        <small></small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i>Accueil</a></li>
+        
+      </ol>
+    </section>
+    {%endblock%}
+    {%block body%}
+           <div class="box box-success">
+             <div class="box-header with-border">
+              <h3 class="box-title">Ajouter produit à la vente</h3>
+                            <div class="pull-right" >
+                                <a href="{{path('vente_liste')}}"  class="btn bg-olive btn-flat margin">Liste des ventes</a>
+                            </div>
+                            <div class="pull-right" >
+                                <a href="{{path('clientvente_ajouter', {'idVente': idVente})}}"  class="btn bg-navy btn-flat margin">Client</a>
+                            </div>
+                 <div class="pull-right" >
+                     <a href="{{path('tva_vente_ajouter', {'idVente': idVente})}}"  class="btn bg-maroon-active btn-flat margin">TVA</a>
+                     <a href="{{path('remise_vente_ajouter', {'idVente': idVente})}}"  class="btn bg-purple-active btn-flat margin">Remise</a>
+                 </div>
+             </div>
+  
+            <!-- /.box-header -->
+          
+            <div class="box-body">
+              {% if result == 4 %}
+                                <div class="alert alert-danger alert-dismissible">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                    <strong>La quantité demandée({{quantiteDemande}}) est superieur à la quantité disponible ({{quantiteDisponible}}).</strong> 
+                                </div>
+                                {% endif %}
+              <div class="row">
+                  <div class="col-md-6">
+                  <div class="form-group">
+                  <label>Produit </label>
+                  {{ form_start(form) }}
+                      {{ form_widget(form.stock, {'attr': {'class': 'form-control', 'placeholder':'prduit'} }) }}
+                  </div>
+                  <!-- /.form-group -->
+                </div>
+              
+                <div class="col-md-6">
+                  <div class="form-group">
+                  <label>Quantité</label>
+                             {{ form_widget(form.quantiteAchat, {'attr': {'class': 'form-control','min':'0' ,'placeholder':'quantite'} }) }}
+                            <div class="pull-right" >
+                                <input type="submit" value="valider" class="btn bg-olive btn-flat margin"/>
+                            </div>  
+                            {{ form_end(form) }}
+                  </div>
+                  <!-- /.form-group -->
+                </div>
+               
+                <!-- /.col -->
+              <!-- /.row -->
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              
+            </div>
+        </div>
+        </div>
+
+            <div class="box-body">
+              <p>La reference de la vente est <b>{{ referenceFacture }}</b> </p>
+                {% if nomClient == 'null' %}
+                {% else %}
+                    <div class="pull-right" >
+                        <p>Client :<b> {{ nomClient }} </b></p>
+                    </div>
+                {% endif %}
+              <br>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Désignation</th>
+                        <th>Prix unitaire</th>
+                        <th>Quantité</th>
+                        <th>Montant</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for liste in produitAchatListe %}
+                        <tr>
+                            <td><a class="btn btn-danger" href="{{ path('produitvente_retirer', {'idVente': liste.id}) }}"><i class="fa fa-close"></i></a></td>
+                            <td>{{ liste.nomProduit }}</td>
+                            <td>{{ liste.prixProduit }}</td>
+                            <td>{{ liste.quantiteAchat }}</td>
+                            <td>{{ liste.prixProduit * liste.quantiteAchat}} F</td>
+
+          
+                        </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+
+            <div class="row">
+                  <div class="col-md-9"><p class="pull-right"><b>Total HT = {{ montantTotal }} F CFA</b></p></div>
+                  <div class="col-md-3"></div>
+            </div>
+
+            <div class="row">
+                  <div class="col-md-9"><p class="pull-right"><b>Remise = {{ remise }}%</b></p></div>
+                  <div class="col-md-3"></div>
+            <div class="row">
+                  <div class="col-md-9"><p class="pull-right"><b>Montant de Remise = {{ montantRemise }} F CFA</b></p></div>
+                  <div class="col-md-3"></div>
+            </div>
+            </div>
+                {% if nouveauMontantTotal == 0 %}
+                <div class="row">
+                    <div class="col-md-9"><p class="pull-right"><b>Montant HT après Remise = {{ montantTotal }} F CFA</b></p></div>
+                    <div class="col-md-3"></div>
+                </div>
+                {% else %}
+                <div class="row">
+                    <div class="col-md-9"><p class="pull-right"><b>Montant HT après Remise = {{ nouveauMontantTotal }} F</b></p></div>
+                    <div class="col-md-3"></div>
+                </div>
+                {% endif %}
+                {% if tva == 100 %}
+                    <div class="row">
+                        <div class="col-md-9"><p class="pull-right"><b>TVA (0%) : 0 F</b></p></div>
+                        <div class="col-md-3"></div>
+                    </div>
+                {% else %}
+                    <div class="row">
+                        <div class="col-md-9"><p class="pull-right"><b>Tva {{ tva }} %= {{ montantTva }} F CFA</b></p></div>
+                        <div class="col-md-3"></div>
+                    </div>
+                {% endif %}
+            <div class="row">
+                  <div class="col-md-9"><p class="pull-right"><b>Total TTC = {{ montantTTC }} F CFA</b></p></div>
+                  <div class="col-md-3"></div>
+            </div>
+
+        </div>
+        
+        {% if facture.statut == 0 %}
+            <div class="pull-right" >
+                <a href="{{path('vente_valider', {'idVente':idVente})}}"  class="btn bg-olive btn-flat margin">Valider la vente</a>
+            </div>  
+            
+        {% elseif facture.statut == 1 %}
+            <div class="pull-right" >
+                <a href="{{path('imprimerachat_ajouter', {'idFacture':idVente})}}"  class="btn bg-primary btn-flat margin">Imprimer</a>
+            </div>
+        {% endif %}
+
+{% endblock %}

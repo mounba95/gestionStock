@@ -1,0 +1,15 @@
+information_liste:
+    path:     /liste_information
+    defaults: { _controller: InformationBundle:Information:listeInformation }
+
+information_ajouter:
+    path:     /ajouter_information
+    defaults: { _controller: InformationBundle:Information:addInformation }
+
+information_modifier:
+    path:     /edit_information/{id}
+    defaults: { _controller: InformationBundle:Information:editInformation }
+
+information_supprimer:
+    path:     /delete_information/{id}
+    defaults: { _controller: InformationBundle:Information:deleteInformation }

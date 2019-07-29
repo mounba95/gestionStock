@@ -1,0 +1,60 @@
+{% extends "::base.html.twig" %}
+    {%block header%}
+      <section class="content-header">
+      <h1>
+        Type
+        <small></small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i>Accueil</a></li>
+        <li><a href="{{path('produit_type_ajouter')}}">Type</a></li>
+      </ol>
+    </section>
+    {%endblock%}
+    {%block body%}
+         <div class="box-header box box-success">
+             <h3 class="box-title">Liste des types</h3>
+   
+<div class="pull-right" >
+                                <a href="{{path('produit_type_ajouter')}}"  class="btn bg-olive btn-flat margin">Ajouter Type</a>
+                            </div>  
+        </div>
+
+        <div class="box-body">
+            <table id="table_typeProduit" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>N°</th>
+                        <th>Nom</th>
+                        <th>Description</th>
+                        <th>Modifier</th>
+                        <th>Detail</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                        <th>N°</th>
+                        <th>Nom</th>
+                        <th>Description</th>
+                        <th>Modifier</th>
+                        <th>Detail</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    {% for liste in typeProduitListe %}
+                        <tr>
+                            <td>{{ liste.id }}</td>
+                            <td>{{ liste.nomType }}</td>
+                            <td>{{ liste.descriptionType }}</td>
+
+                            <td><a class="btn btn-primary" href="{{ path('produit_type_modifier', {'id': liste.id}) }}">Modifier</a></td>
+
+                            <td><a class="btn btn-info" href="{{ path('produit_type_detail', {'id': liste.id}) }}" >Detail</a></td>
+          
+                        </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+
+{% endblock %}

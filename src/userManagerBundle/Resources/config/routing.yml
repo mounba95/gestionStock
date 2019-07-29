@@ -1,0 +1,28 @@
+user_login:
+    path:     /
+    defaults: { _controller: userManagerBundle:User:login }
+
+user_logout:
+    path:     /logout
+    defaults: { _controller: userManagerBundle:User:logout }
+
+user_liste:
+    path:     /listeUser
+    defaults: { _controller: userManagerBundle:User:user }
+
+user_profil:
+    path:     /profil/{id}
+    defaults: { _controller: userManagerBundle:User:Profil }
+
+user_active:
+    path:     /active
+    defaults: { _controller: userManagerBundle:User:Active }
+
+user_desactive:
+    path:     /desactive
+    defaults: { _controller: userManagerBundle:User:Desactive }
+
+user_register:
+    path:     /register
+    defaults: { _controller: userManagerBundle:User:createUser }
+

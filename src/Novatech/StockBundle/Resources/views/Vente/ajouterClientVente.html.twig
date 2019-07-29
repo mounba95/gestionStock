@@ -1,0 +1,51 @@
+{% extends "::base.html.twig" %}
+    {%block header%}
+      <section class="content-header">
+      <h1>
+        Client
+        <small></small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i>Accueil</a></li>
+        
+      </ol>
+    </section>
+    {%endblock%}
+    {%block body%}
+                          
+           <div class="box box-success">
+             <div class="box-header with-border">
+              <h3 class="box-title">Client</h3>
+            
+            </div>
+  
+            <!-- /.box-header -->
+          
+            <div class="box-body">
+              <div class="row">
+                                
+                <div class="col-md-6">
+                  <div class="form-group">
+                  <label>Client</label>
+                  {{ form_start(form) }}
+                             {{ form_widget(form.client, {'attr': {'class': 'form-control', 'placeholder':'client'} }) }}
+                            <div class="pull-right" >
+                             <a class="btn bg-maroon btn-flat margin" href="{{ path('produitvente_ajouter', {'idVente': idVente}) }}" >Annuler</a>
+                                <input type="submit" value="valider" class="btn bg-olive btn-flat margin"/>
+                            </div>  
+                            {{ form_end(form) }}
+                  </div>
+                  <!-- /.form-group -->
+                </div>
+               
+                <!-- /.col -->
+              <!-- /.row -->
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              
+            </div>
+        </div>
+        </div>
+
+{% endblock %}

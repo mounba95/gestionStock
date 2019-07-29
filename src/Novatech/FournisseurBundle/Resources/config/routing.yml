@@ -1,0 +1,3 @@
+fournisseur_homepage:
+    path:     /
+    defaults: { _controller: FournisseurBundle:Default:index }

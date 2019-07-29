@@ -1,0 +1,36 @@
+client_liste:
+    path:     /liste_client
+    defaults: { _controller: ClientBundle:Client:listeClient }
+
+client_ajouter:
+    path:     /ajouter_client
+    defaults: { _controller: ClientBundle:Client:addClient }
+
+client_modifier:
+    path:     /edit_client/{id}
+    defaults: { _controller: ClientBundle:Client:editClient }
+
+client_supprimer:
+    path:     /delete_client/{id}
+    defaults: { _controller: ClientBundle:Client:deleteClient }
+
+tableau_bord:
+    path:     /accueil
+    defaults: { _controller: ClientBundle:Default:accueil }
+
+fournisseur_liste:
+    path:     /liste_fournisseur
+    defaults: { _controller: ClientBundle:Fournisseur:listeFournisseur }
+
+fournisseur_ajouter:
+    path:     /ajouter_fournisseur
+    defaults: { _controller: ClientBundle:Fournisseur:addFournisseur }
+
+fournisseur_modifier:
+    path:     /edit_fournisseur/{id}
+    defaults: { _controller: ClientBundle:Fournisseur:editFournisseur }
+
+fournisseur_supprimer:
+    path:     /delete_fournisseur/{id}
+    defaults: { _controller: ClientBundle:Fournisseur:deleteFournisseur }
+

@@ -1,0 +1,30 @@
+{% extends "::base.html.twig" %}
+    {%block header%}
+      <section class="content-header">
+      <h1>
+        Facture
+        <small></small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i>Accueil</a></li>
+        <li><a href="#">Facture</a></li>
+      </ol>
+    </section>
+    {%endblock%}
+    {%block body%}
+         <div class="box-header box box-success">
+
+
+<div class="pull-right" >
+    <a href="{{path('produitachat_ajouter', {'idFacture': idFacture})}}" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Retour</a>
+                            </div>
+        </div>
+        {%if result == 1 %}
+        <div class="alert alert-default alert-dismissible">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Désolé la facture n a pas pu être generer</strong>
+        </div>
+        {% endif %}
+
+
+    {% endblock %}

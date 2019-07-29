@@ -1,0 +1,76 @@
+{% extends "::base.html.twig" %}
+    {%block header%}
+      <section class="content-header">
+      <h1>
+        Stock
+        <small></small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i>Accueil</a></li>
+        <li><a href="{{path('stock_ajouter')}}">Stock</a></li>
+      </ol>
+    </section>
+    {%endblock%}
+    {%block body%}
+         <div class="box-header box box-success">
+             <h3 class="box-title">Liste des produits en stock</h3>
+   
+<div class="pull-right" >
+{% if is_granted('ROLE_ADMIN') %}
+                                <a href="{{path('stock_ajouter')}}"  class="btn bg-olive btn-flat margin">Ajouter Stock</a>
+                                {% endif %}
+                            </div>  
+        </div>
+
+        <div class="box-body">
+            <table id="table_stock" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>N°</th>
+                        <th>Produit</th>
+                        <th>Prix de vente</th>
+                        <th>Quantite en stock</th>
+                        {% if is_granted('ROLE_ADMIN') %}
+                        <th>Modifer</th>
+                       <th>Detail</th>
+                        {% endif %}
+                        
+                    </tr>
+                </thead>
+                <tfoot>
+                 <tr>
+                        <th>N°</th>
+                        <th>Produit</th>
+                        <th>Prix de vente</th>
+                        <th>Quantite en stock</th>
+                       {% if is_granted('ROLE_ADMIN') %}
+                        <th>Modifer</th>
+                        <th>Detail</th>
+                        {% endif %}
+                    </tr>
+                </tfoot>
+                <tbody>
+                    {% for liste in stockListe %}
+                        {% if liste.quantiteProduit <= liste.limiteProduit %}
+                            <tr class="danger">
+                        {% else %}
+                                <tr>
+                        {% endif %}
+
+                            <td>{{ liste.id }}</td>
+                            <td>{{ liste.produit.nomProduit }}</td>
+                            <td>{{ liste.prixProduit }}</td>
+                             <td>{{ liste.quantiteProduit }}</td>
+                             {% if is_granted('ROLE_ADMIN') %}
+                            <td><a class="btn btn-primary" href="{{ path('stock_modifier', {'id': liste.id}) }}">Modifier</a></td>
+                            
+                            <td><a class="btn btn-info" href="{{ path('stock_detail', {'id': liste.id}) }}" >Detail</a></td>
+                            {% endif %}
+                            
+                        </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+
+{% endblock %}

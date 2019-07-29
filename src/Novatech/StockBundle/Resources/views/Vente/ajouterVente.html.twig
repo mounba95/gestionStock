@@ -1,0 +1,96 @@
+{% extends "::base.html.twig" %}
+    {%block header%}
+      <section class="content-header">
+      <h1>
+        Vente
+        <small></small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i>Accueil</a></li>
+        
+      </ol>
+    </section>
+    {%endblock%}
+    {%block body%}
+                           {%if result == 3 %}
+                             <div class="alert alert-default alert-dismissible">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                    <strong>Veuillez remplir les champs pour créer une vente</strong> 
+                                </div>                          
+                                
+                             {% elseif result == 2 %}
+                                <div class="alert alert-success alert-dismissible">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                    <strong>Enregistrement éffectué avec succée.</strong> 
+                                </div>
+                            {% elseif result == 1 %}
+                                <div class="alert alert-danger alert-dismissible">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                    <strong>Cet enregistrement existe déja.</strong> 
+                                </div>
+                                {% elseif result == 4 %}
+                                <div class="alert alert-danger alert-dismissible">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                    <strong>La quantité demandée({{quantiteDemande}}) est superieur à la quantité disponible ({{quantiteDisponible}}).</strong> 
+                                </div>
+                            {% endif %}
+           <div class="box box-success">
+             <div class="box-header with-border">
+              <h3 class="box-title">créer vente</h3>
+            
+<div class="pull-right" >
+                                <a href="{{path('vente_liste')}}"  class="btn bg-olive btn-flat margin">liste des ventes</a>
+                            </div>  
+            </div>
+  
+            <!-- /.box-header -->
+          
+            <div class="box-body">
+              <div class="row">
+                  <div class="col-md-6">
+                      <div class="form-group">
+                          <label>Offre </label>
+                          {{ form_start(form) }}
+                          {{ form_widget(form.facture.offre, {'attr': {'class': 'form-control', 'placeholder':'l offre'} }) }}
+                      </div>
+                      <!-- /.form-group -->
+                  </div>
+                  <div class="col-md-6">
+                  <div class="form-group">
+                  <label>Produit </label>
+                      {{ form_widget(form.stock, {'attr': {'class': 'form-control', 'placeholder':'reference facture'} }) }}
+                  </div>
+                  <!-- /.form-group -->
+                </div>
+
+                  <div class="col-md-6">
+                  <div class="form-group">
+                      <label>Quantité</label>
+                      {{ form_widget(form.quantiteAchat, {'attr': {'class': 'form-control', 'placeholder':'quantite', 'min':'0'} }) }}
+                  </div>
+                  <!-- /.form-group -->
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                      <label>Tva </label>
+                      {{ form_widget(form.facture.tva, {'attr': {'class': 'form-control', 'placeholder':'tva facture'} }) }}
+                            <div class="pull-right" >
+                             <a class="btn bg-maroon btn-flat margin" href="{{ path('vente_liste') }}" >Annuler</a>
+                                <input type="submit" value="valider" class="btn bg-olive btn-flat margin"/>
+                            </div>
+                             {{ form_end(form) }}
+                  </div>
+                  <!-- /.form-group -->
+                </div>
+               
+                <!-- /.col -->
+              <!-- /.row -->
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              
+            </div>
+        </div>
+        </div>
+
+{% endblock %}

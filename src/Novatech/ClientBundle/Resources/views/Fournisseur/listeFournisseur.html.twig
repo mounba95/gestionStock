@@ -1,0 +1,66 @@
+{% extends "::base.html.twig" %}
+    {%block header%}
+        <section class="content-header">
+            <h1>
+                Fournisseur
+                <small></small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i>Accueil</a></li>
+                <li><a href="{{path('fournisseur_ajouter')}}">Fournisseur</a></li>
+            </ol>
+        </section>
+    {%endblock%}
+    {%block body%}
+        <div class="box-header box box-success">
+            <h3 class="box-title">Liste des fournisseurs</h3>
+
+            <div class="pull-right" >
+                <a href="{{path('fournisseur_ajouter')}}"  class="btn bg-olive btn-flat margin">Ajouter Fournisseur</a>
+            </div>
+        </div>
+
+        <div class="box-body">
+            <table id="table_fournisseur" class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Réference</th>
+                    <th>Nom</th>
+                    <th>Noméro de téléphone</th>
+                    <th>Email</th>
+                    <th>Adresse</th>
+                    <th>Modifer</th>
+                    <th>Supprimer</th>
+                </tr>
+                </thead>
+                <tfoot>
+                 <tr>
+                    <th>Réference</th>
+                    <th>Nom</th>
+                    <th>Noméro de téléphone</th>
+                    <th>Email</th>
+                    <th>Adresse</th>
+                    <th>Modifer</th>
+                    <th>Supprimer</th>
+                </tr>
+                </tfoot>
+                <tbody>
+                {% for liste in fournisseurListe %}
+                    <tr>
+                        <td>{{ liste.referenceFournisseur }}</td>
+                        <td>{{ liste.nomFournisseur }}</td>
+                        <td>{{ liste.numeroFournisseur }}</td>
+                        <td>{{ liste.emailFournisseur}}</td>
+                        <td>{{ liste.adresseFournisseur }}</td>
+
+                        <td><a class="btn btn-primary" href="{{ path('fournisseur_modifier', {'id': liste.id}) }}">Modifier</a></td>
+
+                        <td><a class="btn btn-danger" href="{{ path('fournisseur_supprimer', {'id': liste.id}) }}" onclick="return confirm('Voulez-vous vraiment supprimer ce fornisseur?');" >Supprimer</a></td>
+                       
+                    </tr>
+                {%endfor%}
+                </tbody>
+            </table>
+        </div>
+
+    {% endblock %}

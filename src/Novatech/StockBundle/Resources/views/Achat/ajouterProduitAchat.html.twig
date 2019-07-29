@@ -1,0 +1,147 @@
+{% extends "::base.html.twig" %}
+    {%block header%}
+      <section class="content-header">
+      <h1>
+        Devis
+        <small></small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i>Accueil</a></li>
+        
+      </ol>
+    </section>
+    {%endblock%}
+    {%block body%}
+           <div class="box box-success">
+             <div class="box-header with-border">
+              <h3 class="box-title">Ajouter produit dans devis</h3>
+                            <div class="pull-right" >
+                                <a href="{{path('achat_liste')}}"  class="btn bg-olive btn-flat margin">Liste des dévis</a>
+                            </div>
+                            <div class="pull-right" >
+                                <a href="{{path('clientfacture_ajouter', {'idFacture': idFacture})}}"  class="btn bg-navy btn-flat margin">Client</a>
+                            </div>
+                 <div class="pull-right" >
+                     <a href="{{path('tva_devis_ajouter', {'idFacture': idFacture})}}"  class="btn bg-maroon-active btn-flat margin">TVA</a>
+                     <a href="{{path('remise_devis_ajouter', {'idFacture': idFacture})}}"  class="btn bg-purple-active btn-flat margin">Remise</a>
+                 </div>
+             </div>
+  
+            <!-- /.box-header -->
+          
+            <div class="box-body">
+              <div class="row">
+                  <div class="col-md-6">
+                  <div class="form-group">
+                  <label>Produit </label>
+                  {{ form_start(form) }}
+                      {{ form_widget(form.stock, {'attr': {'class': 'form-control', 'placeholder':'reference facture'} }) }}
+                  </div>
+                  <!-- /.form-group -->
+                </div>
+              
+                <div class="col-md-6">
+                  <div class="form-group">
+                  <label>Quantité</label>
+                             {{ form_widget(form.quantiteAchat, {'attr': {'class': 'form-control','min':'0' ,'placeholder':'quantite'} }) }}
+                            <div class="pull-right" >
+                                <input type="submit" value="valider" class="btn bg-olive btn-flat margin"/>
+                            </div>  
+                            {{ form_end(form) }}
+                  </div>
+                  <!-- /.form-group -->
+                </div>
+               
+                <!-- /.col -->
+              <!-- /.row -->
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              
+            </div>
+        </div>
+        </div>
+
+            <div class="box-body">
+              <p>La reference du dévis est <b>{{ referenceFacture }}</b> </p>
+                {% if nomClient == 'null' %}
+                {% else %}
+                    <div class="pull-right" >
+                        <p>Client :<b> {{ nomClient }} </b></p>
+                    </div>
+                {% endif %}
+              <br>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Désignation</th>
+                        <th>Prix unitaire</th>
+                        <th>Quantité</th>
+                        <th>Montant</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for liste in produitAchatListe %}
+                        <tr>
+                            <td><a class="btn btn-danger" href="{{ path('produitachat_retirer', {'idAchat': liste.id}) }}"><i class="fa fa-close"></i></a></td>
+                            <td>{{ liste.nomProduit }}</td>
+                            <td>{{ liste.prixProduit }}</td>
+                            <td>{{ liste.quantiteAchat }}</td>
+                            <td>{{ liste.prixProduit * liste.quantiteAchat}} F</td>
+
+          
+                        </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+
+            <div class="row">
+                  <div class="col-md-9"><p class="pull-right"><b>Total HT = {{ montantTotal }} F CFA</b></p></div>
+                  <div class="col-md-3"></div>
+            </div>
+
+            <div class="row">
+                  <div class="col-md-9"><p class="pull-right"><b>Remise = {{ remise }}%</b></p></div>
+                  <div class="col-md-3"></div>
+            <div class="row">
+                  <div class="col-md-9"><p class="pull-right"><b>Montant de Remise = {{ montantRemise }} F CFA</b></p></div>
+                  <div class="col-md-3"></div>
+            </div>
+            </div>
+                {% if nouveauMontantTotal == 0 %}
+                <div class="row">
+                    <div class="col-md-9"><p class="pull-right"><b>Montant HT après Remise = {{ montantTotal }} F CFA</b></p></div>
+                    <div class="col-md-3"></div>
+                </div>
+                {% else %}
+                <div class="row">
+                    <div class="col-md-9"><p class="pull-right"><b>Montant HT après Remise = {{ nouveauMontantTotal }} F</b></p></div>
+                    <div class="col-md-3"></div>
+                </div>
+                {% endif %}
+                {% if tva == 100 %}
+                    <div class="row">
+                        <div class="col-md-9"><p class="pull-right"><b>TVA (0%) : 0 F</b></p></div>
+                        <div class="col-md-3"></div>
+                    </div>
+                {% else %}
+                    <div class="row">
+                        <div class="col-md-9"><p class="pull-right"><b>Tva {{ tva }} %= {{ montantTva }} F CFA</b></p></div>
+                        <div class="col-md-3"></div>
+                    </div>
+                {% endif %}
+            <div class="row">
+                  <div class="col-md-9"><p class="pull-right"><b>Total TTC = {{ montantTTC }} F CFA</b></p></div>
+                  <div class="col-md-3"></div>
+            </div>
+
+        </div>
+        <div class="pull-right" >
+                                <a href="{{path('imprimer_facture', {'idFacture':idFacture})}}"  class="btn bg-olive btn-flat margin">générer la facture</a>
+                            </div>  
+                            <div class="pull-right" >
+                                <a href="{{path('imprimerachat_ajouter', {'idFacture':idFacture})}}"  class="btn bg-olive btn-flat margin">générer le dévis</a>
+                            </div>
+
+{% endblock %}

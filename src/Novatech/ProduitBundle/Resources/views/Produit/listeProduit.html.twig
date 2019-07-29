@@ -1,0 +1,58 @@
+{% extends "::base.html.twig" %}
+    {%block header%}
+        <section class="content-header">
+            <h1>
+                Produit
+                <small></small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i>Accueil</a></li>
+                <li><a href="{{path('produit_ajouter')}}">Produit</a></li>
+            </ol>
+        </section>
+    {%endblock%}
+    {%block body%}
+        <div class="box-header box box-success">
+            <h3 class="box-title">Liste des produits</h3>
+
+            <div class="pull-right" >
+                <a href="{{path('produit_ajouter')}}"  class="btn bg-olive btn-flat margin">Ajouter Produit</a>
+            </div>
+        </div>
+
+        <div class="box-body">
+            <table id="table_produit" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Réference</th>
+                        <th>Nom</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Modifer</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                        <th>Réference</th>
+                        <th>Nom</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Modifer</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    {% for liste in produitListe %}
+                        <tr>
+                            <td>{{ liste.referenceProduit }}</td>
+                            <td>{{ liste.nomProduit }}</td>
+                            <td>{{ liste.typeProduit.nomType }}</td>
+                            <td>{{ liste.descriptionProduit }}</td>
+
+                            <td><a class="btn btn-primary" href="{{ path('produit_modifier', {'id': liste.id}) }}">Modifer</a></td>
+                        </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends "::base.html.twig" %}
+    {%block header%}
+        <section class="content-header">
+            <h1>
+                Information
+                <small></small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i>Accueil</a></li>
+                <li><a href="#">Information</a></li>
+            </ol>
+        </section>
+    {%endblock%}
+    {%block body%}
+        <div class="box-header box box-success">
+            <h3 class="box-title">Information</h3>
+            {% if informationListe is empty %}
+            <div class="pull-right" >
+                <a href="{{path('information_ajouter')}}"  class="btn bg-olive btn-flat margin">Ajouter Information</a>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="box-body">
+            <table id="table_pays" class="table">
+                <tbody>
+                {% for liste in informationListe %}
+                    <tr>
+                        <th>Logo</th>
+                        <td>  <img width="160" height="60" alt="" src="{{ asset('uploads/logos/'~ liste.path) }}"  ></td>
+                    </tr>
+                    <tr>
+                        <th>Nom</th>
+                        <td>{{ liste.nomInformation }}</td>
+                    </tr>
+                    <tr>
+                        <th>DG</th>
+                        <td>{{ liste.dg }}</td>
+                    </tr>
+                    <tr>
+                        <th>Adresse</th>
+                        <td>{{ liste.adresse }}</td>
+                    </tr>
+                    <tr>
+                        <th>Téléphone</th>
+                        <td>{{ liste.tel }}</td>
+                    </tr>
+                    <tr>
+                        <th>Cellulaire</th>
+                        <td>{{ liste.cel }}</td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td>{{ liste.email }}</td>
+                    </tr>
+                    <tr>
+                        <th>Situation juridique</th>
+                        <td>{{ liste.situationJuridique }}</td>
+                    </tr>
+                    <tr>
+                        <th>Slogant</th>
+                        <td>{{ liste.slogant }}</td>
+                    </tr>
+                    <tr>
+                        <th>Compte banquaire</th>
+                        <td>{{ liste.compteBancaire }}</td>
+                    </tr>
+                    <tr>
+                        <th>Code postal</th>
+                        <td>{{ liste.codePostal }}</td>
+                    </tr>
+                    <tr>
+                        <th>Site web</th>
+                        <td>{{ liste.siteweb }}</td>
+                    </tr>
+                     <tr>
+                        <th>Message</th>
+                        <td>{{ liste.message }}</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><a class="btn btn-primary" href="{{ path('information_modifier', {'id': liste.id}) }}"><i class="fa fa-edit"></i></a></td>
+
+                    </tr>
+                {%endfor%}
+                </tbody>
+            </table>
+        </div>
+
+    {% endblock %}

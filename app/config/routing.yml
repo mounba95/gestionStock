@@ -1,0 +1,28 @@
+user_manager:
+    resource: "@userManagerBundle/Resources/config/routing.yml"
+    prefix:   /
+
+fournisseur:
+    resource: "@FournisseurBundle/Resources/config/routing.yml"
+    prefix:   /
+
+information:
+    resource: "@InformationBundle/Resources/config/routing.yml"
+    prefix:   /
+
+client:
+    resource: "@ClientBundle/Resources/config/routing.yml"
+    prefix:   /
+
+stock:
+    resource: "@StockBundle/Resources/config/routing.yml"
+    prefix:   /
+
+produit:
+    resource: "@ProduitBundle/Resources/config/routing.yml"
+    prefix:   /
+
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+

@@ -1,0 +1,90 @@
+{% extends "::base.html.twig" %}
+    {%block header%}
+        <section class="content-header">
+            <h1>
+                Fournisseur
+                <small></small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i>Accueil</a></li>
+
+            </ol>
+        </section>
+    {%endblock%}
+    {%block body%}
+        {%if result == 3 %}
+            <div class="alert alert-default alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Veuillez remplir les champs pour ajouter un nouveau type</strong>
+            </div>
+
+        {% elseif result == 2 %}
+            <div class="alert alert-success alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Enregistrement éffectué avec succée.</strong>
+            </div>
+        {% elseif result == 1 %}
+            <div class="alert alert-danger alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Cet enregistrement existe déja.</strong>
+            </div>
+        {% endif %}
+        <div class="box box-success">
+            <div class="box-header with-border">
+                <h3 class="box-title">Ajouter Fournisseur</h3>
+
+                <div class="pull-right" >
+                    <a href="{{path('fournisseur_liste')}}"  class="btn bg-olive btn-flat margin">liste fournisseur</a>
+                </div>
+            </div>
+
+            <!-- /.box-header -->
+
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Nom</label>
+                            {{ form_start(form) }}
+                            {{ form_widget(form.nomFournisseur, {'attr': {'class': 'form-control', 'placeholder':'nom du fournisseur'} }) }}
+                        </div>
+                        <!-- /.form-group -->
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Numéro de téléphone</label>
+                            {{ form_widget(form.numeroFournisseur, {'attr': {'class': 'form-control', 'placeholder':'numéro de téléphone du fournisseur'} }) }}
+                        </div>
+                        <!-- /.form-group -->
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Email</label>
+                            {{ form_widget(form.emailFournisseur, {'attr': {'class': 'form-control', 'placeholder':'adresse email du fournisseur'} }) }}
+                        </div>
+                        <!-- /.form-group -->
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Adresse</label>
+                            {{ form_widget(form.adresseFournisseur, {'attr': {'class': 'form-control', 'placeholder':'adresse du fournisseur'} }) }}
+                            <div class="pull-right" >
+                            <a href="{{path('fournisseur_liste')}}"  class="btn bg-maroon btn-flat">Annuler</a>
+                                <input type="submit" value="valider" class="btn bg-olive btn-flat margin"/>
+                            </div>
+                            {{ form_end(form) }}
+                        </div>
+                        <!-- /.form-group -->
+                    </div>
+
+                    <!-- /.col -->
+                    <!-- /.row -->
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+
+                </div>
+            </div>
+        </div>
+
+    {% endblock %}
