@@ -79,4 +79,45 @@ class AchatRepository extends \Doctrine\ORM\EntityRepository
             ;
     }
 
+    public function getProduitVendus()
+    {
+
+
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $query = $queryBuilder
+            ->select('p.nomProduit as label', 'COUNT(a) as y')
+            ->from ('StockBundle:Achat','a')
+            ->innerJoin('a.facture', 'f')
+            ->innerJoin('a.stock', 's')
+            ->innerJoin('s.produit', 'p')
+            ->groupBy('p.nomProduit');
+        ;
+
+        return $query
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function getTypeProduitVendus()
+    {
+
+
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $query = $queryBuilder
+            ->select('t.nomType as label', 'COUNT(a) as y')
+            ->from ('StockBundle:Achat','a')
+            ->innerJoin('a.facture', 'f')
+            ->innerJoin('a.stock', 's')
+            ->innerJoin('s.produit', 'p')
+            ->innerJoin('p.typeProduit', 't')
+            ->groupBy('t.nomType');
+        ;
+
+        return $query
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 }

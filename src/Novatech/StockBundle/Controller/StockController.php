@@ -31,6 +31,16 @@ class StockController extends Controller {
            $result = 0;
            return $this->render('StockBundle:Stock:listeStock.html.twig', array('result'=>$result,'stockListe' => $stockListe));
        }
+
+    //Fonction qui renvoie la liste des stock
+    public function inventaireStockAction() {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $stockListe = $this->getDoctrine()->getManager()->getRepository('StockBundle:Stock')->findAll();
+        $result = 0;
+        //return new JsonResponse($stockListe);
+        return $this->render('StockBundle:Stock:inventaireStock.html.twig', array('result'=>$result,'stockListe' => $stockListe));
+    }
+
 //Fonction d'ajout d'un stock
     public function addStockAction(Request $request) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');

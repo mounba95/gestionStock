@@ -1,0 +1,308 @@
+{% extends "::base.html.twig" %}
+{%block header%}
+    <section class="content-header">
+        <h1>
+            Facture
+            <small></small>
+            <div class="pull-right">
+                <a href="{{path('versement_vente_ajouter', {'idVente': idVente})}}" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Retour</a>
+                <a href="" class="btn btn-info"  onclick="imprimer_page()"><i class="fa fa-print"></i> Imprimer</a>
+            </div>
+        </h1>
+    </section>
+     <style>
+        #dashboard{
+            display:none;
+        }
+       
+        table, td, th, tr {
+            border: 1px solid black;
+        }
+    </style>
+{%endblock%}
+
+{%block body%}
+
+    <script type="text/javascript">
+        function imprimer_page()
+        {
+            window.print() ;
+        }
+    </script>
+   
+     <section class="invoice">
+       <div class="row">
+            <div class="col-sm-2 invoice-col">
+                {% if information %}
+                    <img src="{{ asset('uploads/logos/'~information.path) }}" width="160px" height="85px" />
+                {% endif %}
+
+            </div>
+            <div class="col-sm-4 invoice-col">
+                <b>{{ information.adresse }}</b><br>
+                Tel : {{ information.cel }} / {{ information.tel }}<br>
+                {{ information.situationJuridique }}
+            </div>
+            <!-- /.col -->
+            <div class="col-sm-6 invoice-col">
+                <div style="border: 2px solid black; padding: 2px; border-radius: 7px; margin-bottom: 1px; padding-left: 8px;" >
+                    Réçu de vente N°<b>{{ facture.referenceFacture }}</b><br> Date :<b>{{ facture.dateFacture |date('d-m-Y H:i:s')}}</b> <br>
+                    {% if facture.statutVersement == 2 %}
+                              <b> Payé </b>
+                            {% else %}
+                                <b>En cours de paiement</b>
+                            {% endif %}
+                </div>
+            </div>
+        </div>
+       
+        <br>
+       
+        <div class="row">
+
+            <div class="col-xs-12 table-responsive">
+                {% if client == 'null' %}
+
+                {% else %}
+
+                    <div style="border: 2px solid black; padding-left: 20px; border-radius: 7px;">
+                        <b>Client :</b>
+                        <strong>{{ client.nomClient }} - {{ client.referenceClient }} </strong> &nbsp;
+                        <b>Téléphone:</b> {{ client.numeroClient }}&nbsp;
+                        <b>Adresse: </b>{{ client.adresseClient }}
+                    </div>
+                {% endif %}
+<table  class="table">
+
+                     <tr>
+                        <th style="border: 1px solid black;">
+                            Montant total à verser :
+                            {{ montantTotal }}
+                        </th>
+                    
+                        <th>
+                            Montant total versé :
+                       {{ facture.montantVerseFacture }}
+                        </th>
+                   
+                        <th>
+                            Montant à completer :
+                        {{montantTotal - facture.montantVerseFacture }}
+                        </td>
+                    </tr>
+                                    
+                </table>
+
+                 <div class="row">
+
+            <div class="col-xs-12 table-responsive">
+              
+                <table class="table" style="margin-top: 2px;">
+                    <thead>
+                    <tr style="background-color: #7a869d;">
+                        <th style="border: 1px solid black; ">Désignation</th>
+                        <th style="border: 1px solid black; ">Quantité</th>
+                        <th style="border: 1px solid black; ">Prix unitaire</th>
+                        <th style="border: 1px solid black; ">Montant</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for liste in produitAchatListe %}
+                        <tr>
+                            <td>{{ liste.nomProduit }}</td>
+                            <td>{{ liste.quantiteAchat }}</td>
+                            <td>{{ liste.prixProduit }}</td>
+                            <td>{{ liste.prixProduit * liste.quantiteAchat}}</td>
+
+                        </tr>
+                    {%endfor%}
+
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+        <div class="row">
+            <!-- accepted payments column -->
+            <div class="col-xs-6">
+
+                <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                    {% if information %}
+                        {{ information.message }}
+                    {% endif %}
+                </p>
+            </div>
+            <!-- /.col -->
+            <div class="col-xs-6">
+                <div class="table-responsive">
+                    <table class="table">
+                        <th style="border: 1px solid black; ">Montant total </th>
+                        <th style="border: 1px solid black; ">{{ montantTotal }} </th>
+                    </table>
+                </div>
+            </div>
+            <!-- /.col -->
+        </div>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+  <table class="table" >
+            <tr>
+                <td style="border-color: #fff; width: 50%">
+                    {% if app.user %}
+                        <p> AGENT : <b>{{ app.user.nom }} {{ app.user.prenom }} </b> (Tel :{{ app.user.telephone }} )</p>
+                    {% endif %}
+
+                </td>
+                {% if information %}
+                    <td style="border-color:  #fff; width: 50%">
+                        CLIENT <br>
+                    </td>
+                {% endif %}
+            </tr>
+        </table>
+ <p>------------------------------------------------------------------------------------------------------------------------------------------- </p>
+
+ <div class="row">
+            <div class="col-sm-2 invoice-col">
+                {% if information %}
+                    <img src="{{ asset('uploads/logos/'~information.path) }}" width="160px" height="85px" />
+                {% endif %}
+
+            </div>
+            <div class="col-sm-4 invoice-col">
+                <b>{{ information.adresse }}</b><br>
+                Tel : {{ information.cel }} / {{ information.tel }}<br>
+                {{ information.situationJuridique }}
+            </div>
+            <!-- /.col -->
+            <div class="col-sm-6 invoice-col">
+                <div style="border: 2px solid black; padding: 2px; border-radius: 7px; margin-bottom: 1px; padding-left: 8px;" >
+                    Réçu de vente N°<b>{{ facture.referenceFacture }}</b><br> Date :<b>{{ facture.dateFacture |date('d-m-Y H:i:s')}}</b> 
+                    <br>
+                    {% if facture.statutVersement == 2 %}
+                              <b> Payé </b>
+                            {% else %}
+                                <b>En cours de paiement</b>
+                            {% endif %}
+                </div>
+            </div>
+        </div>
+       
+        <br>
+       
+        <div class="row">
+
+            <div class="col-xs-12 table-responsive">
+                {% if client == 'null' %}
+
+                {% else %}
+
+                    <div style="border: 2px solid black; padding-left: 20px; border-radius: 7px;">
+                        <b>Client :</b>
+                        <strong>{{ client.nomClient }} - {{ client.referenceClient }} </strong> &nbsp;
+                        <b>Téléphone:</b> {{ client.numeroClient }}&nbsp;
+                        <b>Adresse: </b>{{ client.adresseClient }}
+                    </div>
+                {% endif %}
+<table  class="table">
+
+                     <tr>
+                        <th style="border: 1px solid black;">
+                            Montant total à verser :
+                            {{ montantTotal }}
+                        </th>
+                    
+                        <th>
+                            Montant total versé :
+                       {{ facture.montantVerseFacture }}
+                        </th>
+                   
+                        <th>
+                            Montant à completer :
+                        {{montantTotal - facture.montantVerseFacture }}
+                        </td>
+                    </tr>
+                    
+                   
+                </table>
+
+                 <div class="row">
+
+            <div class="col-xs-12 table-responsive">
+              
+                <table class="table" style="margin-top: 2px;">
+                    <thead>
+                    <tr style="background-color: #7a869d;">
+                        <th style="border: 1px solid black; ">Désignation</th>
+                        <th style="border: 1px solid black; ">Quantité</th>
+                        <th style="border: 1px solid black; ">Prix unitaire</th>
+                        <th style="border: 1px solid black; ">Montant</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for liste in produitAchatListe %}
+                        <tr>
+                            <td>{{ liste.nomProduit }}</td>
+                            <td>{{ liste.quantiteAchat }}</td>
+                            <td>{{ liste.prixProduit }}</td>
+                            <td>{{ liste.prixProduit * liste.quantiteAchat}}</td>
+
+                        </tr>
+                    {%endfor%}
+
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+        <div class="row">
+            <!-- accepted payments column -->
+            <div class="col-xs-6">
+
+                <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                    {% if information %}
+                        {{ information.message }}
+                    {% endif %}
+                </p>
+            </div>
+            <!-- /.col -->
+            <div class="col-xs-6">
+                <div class="table-responsive">
+                    <table class="table">
+                        <th style="border: 1px solid black; ">Montant total </th>
+                        <th style="border: 1px solid black; ">{{ montantTotal }} </th>
+                    </table>
+                </div>
+            </div>
+            <!-- /.col -->
+        </div>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+  <table class="table" >
+            <tr>
+                <td style="border-color: #fff; width: 50%">
+                    {% if app.user %}
+                        <p> AGENT : <b>{{ app.user.nom }} {{ app.user.prenom }} </b> (Tel :{{ app.user.telephone }} )</p>
+                    {% endif %}
+
+                </td>
+                {% if information %}
+                    <td style="border-color:  #fff; width: 50%">
+                        CLIENT <br>
+                    </td>
+                {% endif %}
+            </tr>
+        </table>
+         <p>--------------------------------------------------------------------------------------------------------------------------------------------- </p>
+        <p>Réçu de vente N°<b>{{ facture.referenceFacture }}</b>  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp Date :<b> {{ facture.dateFacture |date('d-m-Y H:i:s')}}</b>  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp    Montant Total :<b> {{ montantTotal }} </b> </p>
+
+    </section>
+{% endblock %}

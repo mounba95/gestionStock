@@ -30,7 +30,6 @@
                     <th>Email</th>
                     <th>Adresse</th>
                     <th>Modifer</th>
-                    <th>Supprimer</th>
                 </tr>
                 </thead>
                 <tfoot>
@@ -41,7 +40,6 @@
                     <th>Email</th>
                     <th>Adresse</th>
                     <th>Modifer</th>
-                    <th>Supprimer</th>
                 </tr>
                 </tfoot>
                 <tbody>
@@ -55,7 +53,7 @@
 
                         <td><a class="btn btn-primary" href="{{ path('fournisseur_modifier', {'id': liste.id}) }}">Modifier</a></td>
 
-                        <td><a class="btn btn-danger" href="{{ path('fournisseur_supprimer', {'id': liste.id}) }}" onclick="return confirm('Voulez-vous vraiment supprimer ce fornisseur?');" >Supprimer</a></td>
+                      <!--  <td><a class="btn btn-danger" href="{{ path('fournisseur_supprimer', {'id': liste.id}) }}" onclick="return confirm('Voulez-vous vraiment supprimer ce fornisseur?');" >Supprimer</a></td> -->
                        
                     </tr>
                 {%endfor%}

@@ -10,7 +10,7 @@ namespace Novatech\StockBundle\Repository;
  */
 class FatureRepository extends \Doctrine\ORM\EntityRepository
 {
-	public function getLastId()
+    public function getLastId()
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $query = $queryBuilder
@@ -18,8 +18,8 @@ class FatureRepository extends \Doctrine\ORM\EntityRepository
             ->from ('StockBundle:Facture','f')
             ->orderBy('f.id',"DESC")
             ->setMaxResults(1)
-		    ;
-		return $query->getQuery()->getResult();
+        ;
+        return $query->getQuery()->getResult();
     }
 
     public function allVenteByUser($idUser)
@@ -32,8 +32,36 @@ class FatureRepository extends \Doctrine\ORM\EntityRepository
             ->where('u.id = :id')
             ->setParameter('id',$idUser)
             ->orderBy('f.id',"DESC")
-		    ;
-		return $query->getQuery()->getResult();
+        ;
+        return $query->getQuery()->getResult();
+    }
+
+    public function allVenteByUserAndTypeVersement($idUser, $statu)
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $query = $queryBuilder
+            ->select('f')
+            ->from ('StockBundle:Facture','f')
+            ->innerJoin('f.user', 'u')
+            ->where('u.id = :id' and 'f.typeReglementFacture = :typergment')
+            ->setParameter('id',$idUser)
+            ->setParameter('typergment',$statu)
+            ->orderBy('f.id',"DESC")
+        ;
+        return $query->getQuery()->getResult();
+    }
+
+    public function allVenteByTypeVersement($statu)
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $query = $queryBuilder
+            ->select('f')
+            ->from ('StockBundle:Facture','f')
+            ->where('f.typeReglementFacture = :typergment')
+            ->setParameter('typergment',$statu)
+            ->orderBy('f.id',"DESC")
+        ;
+        return $query->getQuery()->getResult();
     }
 
     public function getAllDevis()
@@ -63,8 +91,8 @@ class FatureRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('id',$idUser)
             ->setParameter('date',new \Datetime(date('d-m-Y')))
             ->orderBy('f.id',"DESC")
-		    ;
-		return $query->getQuery()->getResult();
+        ;
+        return $query->getQuery()->getResult();
     }
 
     public function allVenteByDay()
@@ -77,8 +105,8 @@ class FatureRepository extends \Doctrine\ORM\EntityRepository
             ->where('f.dateOperationFacture = :date and f.statut = 1')
             ->setParameter('date',new \Datetime(date('d-m-Y')))
             ->orderBy('f.id',"DESC")
-		    ;
-		return $query->getQuery()->getResult();
+        ;
+        return $query->getQuery()->getResult();
     }
 
 
@@ -91,8 +119,8 @@ class FatureRepository extends \Doctrine\ORM\EntityRepository
             ->innerJoin('f.user', 'u')
             ->where('f.statut = 1')
             ->orderBy('f.id',"DESC")
-		    ;
-		return $query->getQuery()->getResult();
+        ;
+        return $query->getQuery()->getResult();
     }
 
     public function allNombreProduitVendu($user)
@@ -107,8 +135,8 @@ class FatureRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('id',$user)
             ->setParameter('date',new \Datetime(date('d-m-Y')))
             ->orderBy('f.id',"DESC")
-		    ;
-		return $query->getQuery()->getResult();
+        ;
+        return $query->getQuery()->getResult();
     }
 
     public function allNombreProduitVendus()
@@ -121,8 +149,8 @@ class FatureRepository extends \Doctrine\ORM\EntityRepository
             ->where('f.dateOperationFacture = :date and f.statut = 1')
             ->setParameter('date',new \Datetime(date('d-m-Y')))
             ->orderBy('f.id',"DESC")
-		    ;
-		return $query->getQuery()->getResult();
+        ;
+        return $query->getQuery()->getResult();
     }
 
 
@@ -137,8 +165,23 @@ class FatureRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('id',$user)
             ->setParameter('date',new \Datetime(date('d-m-Y')))
             ->orderBy('f.id',"DESC")
-		    ;
-		return $query->getQuery()->getResult();
+        ;
+        return $query->getQuery()->getResult();
+    }
+
+    public function allCreditVenteProduit($user)
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $query = $queryBuilder
+            ->select('f')
+            ->from ('StockBundle:Facture','f')
+            ->innerJoin('f.user', 'u')
+            ->where('u.id = :id and f.dateOperationFacture = :date and (f.statut = 1 or f.statut = 0)')
+            ->setParameter('id',$user)
+            ->setParameter('date',new \Datetime(date('d-m-Y')))
+            ->orderBy('f.id',"DESC")
+        ;
+        return $query->getQuery()->getResult();
     }
 
     public function allVenteProduits()
@@ -151,22 +194,64 @@ class FatureRepository extends \Doctrine\ORM\EntityRepository
             ->where('f.dateOperationFacture = :date and f.statut = 1')
             ->setParameter('date',new \Datetime(date('d-m-Y')))
             ->orderBy('f.id',"DESC")
-		    ;
-		return $query->getQuery()->getResult();
+        ;
+        return $query->getQuery()->getResult();
     }
 
-    public function getAllVenteResume($dateFrom, $dateTo)
+    public function allCreditVenteProduits()
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $query = $queryBuilder
             ->select('f')
             ->from ('StockBundle:Facture','f')
-            ->where('f.statut = 1')
+            ->innerJoin('f.user', 'u')
+            ->where('f.dateOperationFacture = :date and (f.statut = 1 or f.statut = 0)')
+            ->setParameter('date',new \Datetime(date('d-m-Y')))
             ->orderBy('f.id',"DESC")
-           
+        ;
+        return $query->getQuery()->getResult();
+    }
+
+
+    public function getAllVenteResume($dateFrom, $dateTo)
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $query = $queryBuilder
+            ->select('a.quantiteAchat as produit', 'p.nomProduit', 'c.nomClient', 'f.referenceFacture', 'f.statut', 'f.statutVersement', 'u.nom', 'u.prenom', 'f.typeReglementFacture','f.dateOperationFacture as dateOp')
+            ->from ('StockBundle:Achat','a')
+            ->leftJoin('a.facture', 'f')
+            ->leftJoin('a.stock', 's')
+            ->leftJoin('s.produit', 'p')
+            ->leftJoin('f.client', 'c')
+            ->leftJoin('f.user', 'u')
+            ->where('f.statut = 0 or f.statut = 1')
+            ->andwhere('f.dateOperationFacture >= :dateFrom ')
+            ->andwhere('f.dateOperationFacture <= :dateTo ')
+            //->groupBy('f.id')
+            ->orderBy('p.id',"DESC")
+            ->setParameter('dateTo', new \DateTime($dateTo))
+            ->setParameter('dateFrom', new \DateTime($dateFrom))
+
         ;
 
-         if ($dateFrom) {
+        return $query->getQuery()->getResult();
+    }
+
+    public function getAllVenteProduitResume($produit, $dateFrom, $dateTo)
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $query = $queryBuilder
+            ->select('f.id', 'f.referenceFacture', 'f.dateFacture')
+            ->from ('StockBundle:Achat','a')
+            ->innerJoin('a.facture', 'f')
+            ->innerJoin('a.stock', 's')
+            ->innerJoin('s.produit', 'p')
+            ->where('f.statut = 1')
+            ->orderBy('f.id',"DESC")
+
+        ;
+
+        if ($dateFrom) {
             $query->andwhere('f.dateOperationFacture >= :dateFrom ');
             $query->setParameter('dateFrom', $dateFrom);
         }
@@ -175,8 +260,113 @@ class FatureRepository extends \Doctrine\ORM\EntityRepository
             $query->andwhere('f.dateOperationFacture <= :dateTo ');
             $query->setParameter('dateTo', $dateTo);
         }
+
+        if ($produit) {
+            $query->andwhere('p.id = :id ');
+            $query->setParameter('id', $produit);
+        }
         return $query->getQuery()->getResult();
     }
+
+
+    public function getAllClientVenteByProduitResume($produit, $dateFrom, $dateTo)
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $query = $queryBuilder
+            ->select('sum(a.quantiteAchat) as produit', 'c.nomClient')
+            ->from ('StockBundle:Achat','a')
+            ->innerJoin('a.facture', 'f')
+            ->innerJoin('a.stock', 's')
+            ->innerJoin('f.client', 'c')
+            ->innerJoin('s.produit', 'p')
+            ->where('f.statut = 1')
+            ->groupBy('c.id')
+            ->orderBy('c.id',"DESC")
+
+        ;
+
+        if ($dateFrom) {
+            $query->andwhere('f.dateOperationFacture >= :dateFrom ');
+            $query->setParameter('dateFrom', $dateFrom);
+        }
+
+        if ($dateTo) {
+            $query->andwhere('f.dateOperationFacture <= :dateTo ');
+            $query->setParameter('dateTo', $dateTo);
+        }
+
+        if ($produit) {
+            $query->andwhere('p.id = :id ');
+            $query->setParameter('id', $produit);
+        }
+        return $query->getQuery()->getResult();
+    }
+    public function getAllClientVenteResume($client, $dateFrom, $dateTo)
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $query = $queryBuilder
+            ->select('sum(a.quantiteAchat) as produit', 'p.nomProduit')
+            ->from ('StockBundle:Achat','a')
+            ->innerJoin('a.facture', 'f')
+            ->innerJoin('a.stock', 's')
+            ->innerJoin('f.client', 'c')
+            ->innerJoin('s.produit', 'p')
+            ->where('f.statut = 1')
+            ->groupBy('p.id')
+            ->orderBy('p.id',"DESC")
+
+        ;
+
+        if ($dateFrom) {
+            $query->andwhere('f.dateOperationFacture >= :dateFrom ');
+            $query->setParameter('dateFrom', $dateFrom);
+        }
+
+        if ($dateTo) {
+            $query->andwhere('f.dateOperationFacture <= :dateTo ');
+            $query->setParameter('dateTo', $dateTo);
+        }
+
+        if ($client) {
+            $query->andwhere('c.id = :id ');
+            $query->setParameter('id', $client);
+        }
+        return $query->getQuery()->getResult();
+    }
+
+    public function getAllClientVenteNonValiderResume($client, $dateFrom, $dateTo)
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $query = $queryBuilder
+            ->select('sum(a.quantiteAchat) as produit', 'p.nomProduit')
+            ->from ('StockBundle:Achat','a')
+            ->innerJoin('a.facture', 'f')
+            ->innerJoin('a.stock', 's')
+            ->innerJoin('f.client', 'c')
+            ->innerJoin('s.produit', 'p')
+            ->where('f.statut = 0')
+            ->groupBy('p.id')
+            ->orderBy('p.id',"DESC")
+
+        ;
+
+        if ($dateFrom) {
+            $query->andwhere('f.dateOperationFacture >= :dateFrom ');
+            $query->setParameter('dateFrom', $dateFrom);
+        }
+
+        if ($dateTo) {
+            $query->andwhere('f.dateOperationFacture <= :dateTo ');
+            $query->setParameter('dateTo', $dateTo);
+        }
+
+        if ($client) {
+            $query->andwhere('c.id = :id ');
+            $query->setParameter('id', $client);
+        }
+        return $query->getQuery()->getResult();
+    }
+
 
 
     public function getAllVenteResumeByUser($dateFrom, $dateTo, $user)
@@ -186,12 +376,12 @@ class FatureRepository extends \Doctrine\ORM\EntityRepository
             ->select('f')
             ->from ('StockBundle:Facture','f')
             ->innerJoin('f.user', 'u')
-            ->where('f.statut = 1')
+            ->where('f.statut = 1 ')
             ->orderBy('f.id',"DESC")
-           
+
         ;
 
-         if ($dateFrom) {
+        if ($dateFrom) {
             $query->andwhere('f.dateOperationFacture >= :dateFrom ');
             $query->setParameter('dateFrom', $dateFrom);
         }
@@ -206,5 +396,65 @@ class FatureRepository extends \Doctrine\ORM\EntityRepository
         }
         return $query->getQuery()->getResult();
     }
- 
+
+    public function getAllVenteProduitResumeByUser($produit, $dateFrom, $dateTo, $user)
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $query = $queryBuilder
+            ->select('f.id', 'f.referenceFacture', 'f.dateFacture')
+            ->from ('StockBundle:Achat','a')
+            ->innerJoin('a.facture', 'f')
+            ->innerJoin('a.stock', 's')
+            ->innerJoin('f.user', 'u')
+            ->innerJoin('s.produit', 'p')
+            ->where('f.statut = 1')
+            ->orderBy('f.id',"DESC")
+
+        ;
+
+        if ($dateFrom) {
+            $query->andwhere('f.dateOperationFacture >= :dateFrom ');
+            $query->setParameter('dateFrom', $dateFrom);
+        }
+
+        if ($dateTo) {
+            $query->andwhere('f.dateOperationFacture <= :dateTo ');
+            $query->setParameter('dateTo', $dateTo);
+        }
+        if ($user) {
+            $query->andwhere('u.id = :user');
+            $query->setParameter('user', $user);
+        }
+        if ($produit) {
+            $query->andwhere('p.id = :id ');
+            $query->setParameter('id', $produit);
+        }
+        return $query->getQuery()->getResult();
+    }
+
+    public function chiffreAffaire($dateFrom, $dateTo, $numCompte)
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $query = $queryBuilder
+            ->select('o')
+            ->from ('CompteBundle:Operation','o')
+            ->where('o.compte = :numCompte')
+            ->setParameter('numCompte', $numCompte)
+            ->orderBy('o.id',"DESC")
+
+        ;
+
+        if ($dateFrom) {
+            $query->andwhere('o.dateOperation >= :dateFrom ');
+            $query->setParameter('dateFrom', $dateFrom);
+        }
+
+        if ($dateTo) {
+            $query->andwhere('o.dateOperation <= :dateTo ');
+            $query->setParameter('dateTo', $dateTo);
+        }
+
+        return $query->getQuery()->getResult();
+    }
+
 }

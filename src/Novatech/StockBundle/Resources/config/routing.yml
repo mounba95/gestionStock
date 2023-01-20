@@ -18,6 +18,10 @@ stock_detail:
     path:     /detail_stock/{id}
     defaults: { _controller: StockBundle:Stock:deltailStock }
 
+stock_inventaire:
+    path:     /inventaire_stock
+    defaults: { _controller: StockBundle:Stock:inventaireStock }
+
 approvisioner_liste:
     path:     /liste_approvisioner
     defaults: { _controller: StockBundle:StockFournisseur:listeApprovisioner }
@@ -74,6 +78,14 @@ vente_liste:
     path:     /liste_vente
     defaults: { _controller: StockBundle:Achat:listeVente }
 
+vente_liste_total:
+    path:     /liste_vente_total
+    defaults: { _controller: StockBundle:Achat:listeVenteTotal }
+
+vente_liste_partiel:
+    path:     /liste_vente_partiel
+    defaults: { _controller: StockBundle:Achat:listeVentePartiel }
+
 vente_ajouter:
     path:     /ajouter_vente
     defaults: { _controller: StockBundle:Achat:addVente }
@@ -98,9 +110,22 @@ produitvente_retirer:
     path:     /retirerproduit_vente/{idVente}
     defaults: { _controller: StockBundle:Achat:removeProduitVente }
 
+produitvente_modifier_prix:
+    path:     /modifierprix_vente/{idVente}
+    defaults: { _controller: StockBundle:Achat:midifierPrixVente }
+
+produitachat_modifier_prix:
+    path:     /modifierprix_achat/{idVente}
+    defaults: { _controller: StockBundle:Achat:midifierPrixAchat }
+
+
 imprimervente_ajouter:
     path:     /imprimer_vente/{idVente}
     defaults: { _controller: StockBundle:Achat:imprimerVente }
+
+imprimer_versement:
+    path:     /imprimer_versement/{idVente}
+    defaults: { _controller: StockBundle:Achat:imprimerVersement }
 
 clientvente_ajouter:
     path:     /ajouterclient_vente/{idVente}
@@ -118,18 +143,53 @@ vente_valider:
     path:     /valider_vente/{idVente}
     defaults: { _controller: StockBundle:Achat:validerVente }
 
+vente_annuler:
+    path:     /annuler_vente/{idVente}
+    defaults: { _controller: StockBundle:Achat:annulerVente }
+
 vente_imprimerrecu:
     path:     /imprimerrecu_vente/{idVente}
     defaults: { _controller: StockBundle:Achat:imprimerRecuVente }
+
+modepaiement_vente_ajouter:
+    path:     /mode_paiement/{idVente}
+    defaults: { _controller: StockBundle:Achat:modepaiementVente }
+
+versement_vente_ajouter:
+    path:     /versement/{idVente}
+    defaults: { _controller: StockBundle:Achat:versementVente }
 
 vente_rapport_all:
     path:     /rapport_vente
     defaults: { _controller: StockBundle:Achat:rapportVenteAll }
 
+vente_rapport_allproduit:
+    path:     /rapport_vente_produit
+    defaults: { _controller: StockBundle:Achat:rapportProduitVenteAll }
+
+vente_rapport_byclientproduit:
+    path:     /rapport_vente_client
+    defaults: { _controller: StockBundle:Achat:rapportClientVenteAll }
+
+ventenonvalider_rapport_byclientproduit:
+    path:     /rapport_ventenonvalider_client
+    defaults: { _controller: StockBundle:Achat:rapportClientVenteNonValiderAll }
+
+vente_rapport_by_user_byproduit:
+    path:     /rapport_venteproduit_byuser
+    defaults: { _controller: StockBundle:Achat:rapportVenteProduitByUser }
+
 vente_rapport_by_user:
+    path:     /rapport_vente_byclient
+    defaults: { _controller: StockBundle:Achat:rapportVenteByClient }
+
+vente_rapport_by_client:
     path:     /rapport_vente_byuser
     defaults: { _controller: StockBundle:Achat:rapportVenteByUser }
 
+chiffreAffaire_rapport_all:
+    path:     /rapport_chiffre
+    defaults: { _controller: StockBundle:Achat:rapportChiffreAffaire }
 
 tva_index:
     path:     /tva

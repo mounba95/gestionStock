@@ -29,6 +29,7 @@ class FournisseurController extends Controller {
 //Fonction d'ajout d'un fournisseur
     public function addFournisseurAction(Request $request) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $fournisseurListe = $this->getDoctrine()->getManager()->getRepository('ClientBundle:Fournisseur')->getAllFournisseur();
         $em = $this->getDoctrine()->getManager();
         $result = 0;
         $fournisseur = new Fournisseur();
@@ -44,7 +45,7 @@ class FournisseurController extends Controller {
             $lastId= $lastFournisseurId[0]['id']+1;
             $referenceFournisseur = 'FSS/'.$debutNum.$lastId;
             $data = $request->request->get($form->getName());
-            $numeroFournisseur = $data['numeroFournisseur'];
+            $numeroFournisseur = trim($data['numeroFournisseur']);
             if ($em->getRepository('ClientBundle:Fournisseur')->findOneBynumeroFournisseur($numeroFournisseur)) {
                 $result = 1;
             }else{
@@ -52,7 +53,7 @@ class FournisseurController extends Controller {
                     ->setReferenceFournisseur($referenceFournisseur)
                     ->setNumeroFournisseur($numeroFournisseur)
                     ->setEtatFournisseur(0)
-                    ;
+                ;
                 $em->persist($fournisseur);
                 $em->flush();
                 unset($fournisseur);
@@ -68,7 +69,7 @@ class FournisseurController extends Controller {
         } else {
             $result = 4;
         }
-        return $this->render('ClientBundle:Fournisseur:ajouterFournisseur.html.twig', array('result'=>$result, 'form' => $form -> createView()));
+        return $this->render('ClientBundle:Fournisseur:ajouterFournisseur.html.twig', array('result'=>$result, 'form' => $form -> createView(),'fournisseurListe' => $fournisseurListe));
     }
 
 //Fonction pour la modification d'un fournisseur
@@ -79,17 +80,20 @@ class FournisseurController extends Controller {
         $result = 0;
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($id);
-            $em->flush();
-            if ($em) {
-                $result = 2;
-                unset($fournisseur);
-                return $this->render('ClientBundle:Fournisseur:listeFournisseur.html.twig', array(
-                    'result' => $result,'fournisseurListe' => $fournisseurListe ,'form' =>$form->createView()));
-            } else {
-                $result = 3;
+            $data = $request->request->get($form->getName());
+            $numeroFournisseur = trim($data['numeroFournisseur']);
+            $fss = $em->getRepository('ClientBundle:Fournisseur')->findOneBynumeroFournisseur($numeroFournisseur);
+            if ($fss and $fss->getId() != $id->getId()) {
+                $result = 1;
+            }else {
+                $em->persist($id);
+                $em->flush();
+                if ($em) {
+                    return $this->redirectToRoute('fournisseur_ajouter');
+                } else {
+                    $result = 3;
+                }
             }
-
         }
         return $this->render('ClientBundle:Fournisseur:ajouterFournisseur.html.twig', array(
             'result' => $result,'fournisseurListe' => $fournisseurListe ,'form' =>$form->createView()));

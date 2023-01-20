@@ -30,12 +30,13 @@ class TypeProduitController extends Controller {
     public function addTypeProduitAction(Request $request) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $em = $this->getDoctrine()->getManager();
+        $typeProduitListe = $em->getRepository('ProduitBundle:TypeProduit')->findAll();
         $result = 0;
         $typeProduit = new TypeProduit();     
         $form = $this->createForm(TypeProduitType::class, $typeProduit);
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $data = $request->request->get($form->getName());
-            $nomType = $data['nomType'];
+            $nomType = trim($data['nomType']);
             $descriptionType = $data['descriptionType'];
             if ($em->getRepository('ProduitBundle:TypeProduit')->findOneBynomType($nomType)) {
                 $result = 1;   
@@ -50,7 +51,9 @@ class TypeProduitController extends Controller {
                 $typeProduit = new TypeProduit();
                 $form = $this->createForm(TypeProduitType::class, $typeProduit);
                 if ($em) {
-                    $result = 2;                
+                    $result = 2;
+                    $typeProduitListe = $em->getRepository('ProduitBundle:TypeProduit')->findAll();
+                    return $this->render('ProduitBundle:TypeProduit:ajouterTypeProduit.html.twig', array('result'=>$result, 'form' => $form -> createView(), 'typeProduitListe' => $typeProduitListe));
                 } else {
                     $result = 3;
                 }
@@ -58,7 +61,7 @@ class TypeProduitController extends Controller {
         } else {
             $result = 4;
         }
-        return $this->render('ProduitBundle:TypeProduit:ajouterTypeProduit.html.twig', array('result'=>$result, 'form' => $form -> createView()));
+        return $this->render('ProduitBundle:TypeProduit:ajouterTypeProduit.html.twig', array('result'=>$result, 'form' => $form -> createView(), 'typeProduitListe' => $typeProduitListe));
     }
 
 //Fonction pour la modification d'un typeProduit
@@ -69,15 +72,19 @@ class TypeProduitController extends Controller {
         $result = 0;
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($id);
-            $em->flush();
-            if ($em) {
-                $result = 2; 
-                unset($typeProduit);
-                return $this->render('ProduitBundle:TypeProduit:listeTypeProduit.html.twig', array(
-            'result' => $result,'typeProduitListe' => $typeProduitListe ,'form' =>$form->createView()));                
-            } else {
-                $result = 3;
+            $data = $request->request->get($form->getName());
+            $nomType = trim($data['nomType']);
+            $tp = $em->getRepository('ProduitBundle:TypeProduit')->findOneBynomType($nomType);
+            if ($tp and $tp->getId() != $id->getId()) {
+                $result = 1;
+            }else {
+                $em->persist($id);
+                $em->flush();
+                if ($em) {
+                    return $this->redirectToRoute('produit_type_ajouter');
+                } else {
+                    $result = 3;
+                }
             }
  
         }

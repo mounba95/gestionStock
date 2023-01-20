@@ -1,0 +1,50 @@
+{% extends "::base.html.twig" %}
+    {%block header%}
+        <section class="content-header">
+            <h1>
+                Inventaire des produits en stock
+                <small></small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i>Accueil</a></li>
+                <li><a href="{{path('stock_inventaire')}}">Inventaire</a></li>
+            </ol>
+        </section>
+    {%endblock%}
+    {%block body%}
+        <div class="box-header box box-success">
+            <h3 class="box-title">Inventaire des produits en stock</h3>
+        </div>
+
+        <div class="box-body">
+            <table id="inventaire" class="table table-bordered">
+                <thead>
+                <tr class="info">
+                    <th>Produit</th>
+                    <th>Prix de vente</th>
+                    <th>Quantite en stock</th>
+                    <th>Montant de vente</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% set total = 0 %}
+                {% for liste in stockListe %}
+                    <tr>
+                        <td>{{ liste.produit.nomProduit }}</td>
+                        <td>{{ liste.prixProduit }}</td>
+                        <td>{{ liste.quantiteProduit }}</td>
+                        <td>{{ liste.prixProduit * liste.quantiteProduit}}</td>
+                        {% set total = total+ liste.prixProduit*liste.quantiteProduit %}
+                    </tr>
+                {%endfor%}
+                <tr>
+                    <td><b>Total</b></td>
+                    <td></td>
+                    <td></td>
+                    <td class="success"><b>{{ total }}</b></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    {% endblock %}

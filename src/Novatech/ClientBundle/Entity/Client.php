@@ -232,7 +232,7 @@ class Client
      */
     public function __toString()
     {
-     return $this->referenceClient; 
+     return $this->nomClient.' / '.$this->referenceClient;
     }
 }
 

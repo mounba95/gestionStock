@@ -1,0 +1,23 @@
+compte_liste:
+    path:     /liste_compte
+    defaults: { _controller: CompteBundle:Compte:listeCompte }
+
+compte_ajouter:
+    path:     /ajouter_compte
+    defaults: { _controller: CompteBundle:Compte:addCompte }
+
+compte_modifier:
+    path:     /edit_compte/{id}
+    defaults: { _controller: CompteBundle:Compte:editCompte }
+
+compte_supprimer:
+    path:     /delete_compte/{id}
+    defaults: { _controller: CompteBundle:Compte:deleteCompte }
+
+compte_detail:
+    path:     /detail_compte/{id}
+    defaults: { _controller: CompteBundle:Compte:detailCompte }
+
+compte_activer_desactiver:
+    path:     /etat_compte/{id}
+    defaults: { _controller: CompteBundle:Compte:etatCompte }

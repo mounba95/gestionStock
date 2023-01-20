@@ -23,7 +23,7 @@
                             </div>
                  <div class="pull-right" >
                      <a href="{{path('tva_devis_ajouter', {'idFacture': idFacture})}}"  class="btn bg-maroon-active btn-flat margin">TVA</a>
-                     <a href="{{path('remise_devis_ajouter', {'idFacture': idFacture})}}"  class="btn bg-purple-active btn-flat margin">Remise</a>
+                    <!-- <a href="{{path('remise_devis_ajouter', {'idFacture': idFacture})}}"  class="btn bg-purple-active btn-flat margin">Remise</a>-->
                  </div>
              </div>
   
@@ -86,7 +86,7 @@
                         <tr>
                             <td><a class="btn btn-danger" href="{{ path('produitachat_retirer', {'idAchat': liste.id}) }}"><i class="fa fa-close"></i></a></td>
                             <td>{{ liste.nomProduit }}</td>
-                            <td>{{ liste.prixProduit }}</td>
+                            <td>{{ liste.prixProduit }} &nbsp <a class="btn btn-primary" href="{{ path('produitachat_modifier_prix', {'idVente': liste.id}) }}"> <i class="fa fa-edit"></i></a></td>
                             <td>{{ liste.quantiteAchat }}</td>
                             <td>{{ liste.prixProduit * liste.quantiteAchat}} F</td>
 
@@ -100,26 +100,6 @@
                   <div class="col-md-9"><p class="pull-right"><b>Total HT = {{ montantTotal }} F CFA</b></p></div>
                   <div class="col-md-3"></div>
             </div>
-
-            <div class="row">
-                  <div class="col-md-9"><p class="pull-right"><b>Remise = {{ remise }}%</b></p></div>
-                  <div class="col-md-3"></div>
-            <div class="row">
-                  <div class="col-md-9"><p class="pull-right"><b>Montant de Remise = {{ montantRemise }} F CFA</b></p></div>
-                  <div class="col-md-3"></div>
-            </div>
-            </div>
-                {% if nouveauMontantTotal == 0 %}
-                <div class="row">
-                    <div class="col-md-9"><p class="pull-right"><b>Montant HT après Remise = {{ montantTotal }} F CFA</b></p></div>
-                    <div class="col-md-3"></div>
-                </div>
-                {% else %}
-                <div class="row">
-                    <div class="col-md-9"><p class="pull-right"><b>Montant HT après Remise = {{ nouveauMontantTotal }} F</b></p></div>
-                    <div class="col-md-3"></div>
-                </div>
-                {% endif %}
                 {% if tva == 100 %}
                     <div class="row">
                         <div class="col-md-9"><p class="pull-right"><b>TVA (0%) : 0 F</b></p></div>
@@ -132,13 +112,13 @@
                     </div>
                 {% endif %}
             <div class="row">
-                  <div class="col-md-9"><p class="pull-right"><b>Total TTC = {{ montantTTC }} F CFA</b></p></div>
+                  <div class="col-md-9"><sp class="pull-right"><b>Total TTC = {{ montantTTC }} F CFA</b></sp></div>
                   <div class="col-md-3"></div>
             </div>
 
         </div>
         <div class="pull-right" >
-                                <a href="{{path('imprimer_facture', {'idFacture':idFacture})}}"  class="btn bg-olive btn-flat margin">générer la facture</a>
+                                <a href="{{path('vente_valider', {'idVente':idFacture})}}"  class="btn bg-olive btn-flat margin" onclick="return confirm('Voulez-vous vraiment faire cette action?');">générer la facture</a>
                             </div>  
                             <div class="pull-right" >
                                 <a href="{{path('imprimerachat_ajouter', {'idFacture':idFacture})}}"  class="btn bg-olive btn-flat margin">générer le dévis</a>

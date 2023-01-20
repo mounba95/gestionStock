@@ -12,29 +12,13 @@
         </section>
     {%endblock%}
     {%block body%}
-        {%if result == 3 %}
-            <div class="alert alert-default alert-dismissible">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>Veuillez remplir les champs pour ajouter un nouveau type</strong>
-            </div>
 
-        {% elseif result == 2 %}
-            <div class="alert alert-success alert-dismissible">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>Enregistrement éffectué avec succée.</strong>
-            </div>
-        {% elseif result == 1 %}
-            <div class="alert alert-danger alert-dismissible">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>Cet enregistrement existe déja.</strong>
-            </div>
-        {% endif %}
         <div class="box box-success">
             <div class="box-header with-border">
                 <h3 class="box-title">Ajouter Fournisseur</h3>
 
                 <div class="pull-right" >
-                    <a href="{{path('fournisseur_liste')}}"  class="btn bg-olive btn-flat margin">liste fournisseur</a>
+                    <!--  <a href="{{path('fournisseur_liste')}}"  class="btn bg-olive btn-flat margin">liste fournisseur</a> -->
                 </div>
             </div>
 
@@ -44,9 +28,9 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Nom</label>
+                            <label>Nom et prénom</label>
                             {{ form_start(form) }}
-                            {{ form_widget(form.nomFournisseur, {'attr': {'class': 'form-control', 'placeholder':'nom du fournisseur'} }) }}
+                            {{ form_widget(form.nomFournisseur, {'attr': {'class': 'form-control', 'placeholder':'nom et prénom du fournisseur'} }) }}
                         </div>
                         <!-- /.form-group -->
                     </div>
@@ -62,19 +46,22 @@
                             <label>Email</label>
                             {{ form_widget(form.emailFournisseur, {'attr': {'class': 'form-control', 'placeholder':'adresse email du fournisseur'} }) }}
                         </div>
-                        <!-- /.form-group -->
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Adresse</label>
                             {{ form_widget(form.adresseFournisseur, {'attr': {'class': 'form-control', 'placeholder':'adresse du fournisseur'} }) }}
-                            <div class="pull-right" >
-                            <a href="{{path('fournisseur_liste')}}"  class="btn bg-maroon btn-flat">Annuler</a>
-                                <input type="submit" value="valider" class="btn bg-olive btn-flat margin"/>
-                            </div>
-                            {{ form_end(form) }}
+
                         </div>
                         <!-- /.form-group -->
+                    </div>
+                    <div class="col-md-6">
+                        <div class="pull-right" >
+                            <a href="{{path('fournisseur_ajouter')}}"  class="btn bg-maroon btn-flat">Annuler</a>
+                            <input type="submit" value="valider" class="btn bg-olive btn-flat margin"/>
+
+                            {{ form_end(form) }}
+                        </div>
                     </div>
 
                     <!-- /.col -->
@@ -84,6 +71,63 @@
                 <div class="box-footer">
 
                 </div>
+
+                {%if result == 3 %}
+                    <div class="alert alert-default alert-dismissible">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Veuillez remplir les champs pour ajouter un nouveau type</strong>
+                    </div>
+
+                {% elseif result == 2 %}
+                    <div class="alert alert-success alert-dismissible">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Enregistrement éffectué avec succée.</strong>
+                    </div>
+                {% elseif result == 1 %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Cet enregistrement existe déja.</strong>
+                    </div>
+                {% endif %}
+
+                <table id="table_fournisseur" class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Réference</th>
+                        <th>Nom</th>
+                        <th>Noméro de téléphone</th>
+                        <th>Email</th>
+                        <th>Adresse</th>
+                        <th>Modifer</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th>Réference</th>
+                        <th>Nom</th>
+                        <th>Noméro de téléphone</th>
+                        <th>Email</th>
+                        <th>Adresse</th>
+                        <th>Modifer</th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    {% for liste in fournisseurListe %}
+                        <tr>
+                            <td>{{ liste.referenceFournisseur }}</td>
+                            <td>{{ liste.nomFournisseur }}</td>
+                            <td>{{ liste.numeroFournisseur }}</td>
+                            <td>{{ liste.emailFournisseur}}</td>
+                            <td>{{ liste.adresseFournisseur }}</td>
+
+                            <td><a class="btn btn-primary" href="{{ path('fournisseur_modifier', {'id': liste.id}) }}">Modifier</a></td>
+
+                            <!--  <td><a class="btn btn-danger" href="{{ path('fournisseur_supprimer', {'id': liste.id}) }}" onclick="return confirm('Voulez-vous vraiment supprimer ce fornisseur?');" >Supprimer</a></td> -->
+
+                        </tr>
+                    {%endfor%}
+                    </tbody>
+                </table>
             </div>
         </div>
 

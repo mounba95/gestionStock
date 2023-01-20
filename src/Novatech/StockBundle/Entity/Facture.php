@@ -63,6 +63,20 @@ class Facture
      */
     private $statut;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="statutVersement", type="integer", nullable=true)
+     */
+    private $statutVersement;
+
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(nullable=true,name="typeReglementFacture", type="integer")
+     */
+    private $typeReglementFacture;
 
     /**
      * @ORM\OneToMany(targetEntity="Achat", mappedBy="facture")
@@ -89,6 +103,13 @@ class Facture
     private $user;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(nullable=true,name="montantVerseFacture", type="integer")
+     */
+    private $montantVerseFacture;
+
+    /**
      * Get id
      *
      * @return int
@@ -103,7 +124,7 @@ class Facture
      *
      * @param string $referenceFacture
      *
-     * @return Fature
+     * @return Facture
      */
     public function setReferenceFacture($referenceFacture)
     {
@@ -127,7 +148,7 @@ class Facture
      *
      * @param string $offre
      *
-     * @return Fature
+     * @return Facture
      */
     public function setOffre($offre)
     {
@@ -294,6 +315,30 @@ class Facture
         return $this->statut;
     }
 
+    /**
+     * Set typeReglementFacture
+     *
+     * @param integer $typeReglementFacture
+     *
+     * @return Facture
+     */
+    public function setTypeReglementFacture($typeReglementFacture)
+    {
+        $this->typeReglementFacture = $typeReglementFacture;
+
+        return $this;
+    }
+
+    /**
+     * Get typeReglementFacture
+     *
+     * @return int
+     */
+    public function getTypeReglementFacture()
+    {
+        return $this->typeReglementFacture;
+    }
+
       /**
      * Set user
      *
@@ -318,5 +363,52 @@ class Facture
         return $this->user;
     }
 
+    /**
+     * Set montantVerseFacture
+     *
+     * @param integer $montantVerseFacture
+     *
+     * @return Facture
+     */
+    public function setMontantVerseFacture($montantVerseFacture)
+    {
+        $this->montantVerseFacture = $montantVerseFacture;
+
+        return $this;
+    }
+
+    /**
+     * Get montantVerseFacture
+     *
+     * @return int
+     */
+    public function getMontantVerseFacture()
+    {
+        return $this->montantVerseFacture;
+    }
+
+    /**
+     * Set statutVersement
+     *
+     * @param integer $statutVersement
+     *
+     * @return Facture
+     */
+    public function setStatutVersement($statutVersement)
+    {
+        $this->statutVersement = $statutVersement;
+
+        return $this;
+    }
+
+    /**
+     * Get statutVersement
+     *
+     * @return integer
+     */
+    public function getStatutVersement()
+    {
+        return $this->statutVersement;
+    }
 }
 

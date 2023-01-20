@@ -12,21 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class TvaController extends Controller
 {
-    /**
-     * Lists all tva entities.
-     *
-     */
-    public function indexAction()
-    {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $em = $this->getDoctrine()->getManager();
-
-        $tvas = $em->getRepository('StockBundle:Tva')->findAll();
-
-        return $this->render('tva/index.html.twig', array(
-            'tvas' => $tvas,
-        ));
-    }
 
     /**
      * Creates a new tva entity.
@@ -35,20 +20,42 @@ class TvaController extends Controller
     public function newAction(Request $request)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $em = $this->getDoctrine()->getManager();
+        $tvas = $em->getRepository('StockBundle:Tva')->findAll();
         $tva = new Tva();
         $form = $this->createForm('Novatech\StockBundle\Form\TvaFormType', $tva);
         $form->handleRequest($request);
+        $result = 0;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($tva);
-            $em->flush();
-
-            return $this->redirectToRoute('tva_show', array('id' => $tva->getId()));
+            $data = $request->request->get($form->getName());
+            $tvaN = trim($data['tvaFacture']);
+            if ($em->getRepository('StockBundle:Tva')->findOneByTvaFacture($tvaN)) {
+                $result = 1;
+            }else {
+                $em->persist($tva);
+                $em->flush();
+                $result = 2;
+                $tva = new Tva();
+                $form = $this->createForm('Novatech\StockBundle\Form\TvaFormType', $tva);
+                $tvas = $em->getRepository('StockBundle:Tva')->findAll();
+                return $this->render('tva/index.html.twig', array(
+                    'tvas' => $tvas,
+                    'result' => $result,
+                    'form' => $form->createView(),
+                ));
+            }
+            $tvas = $em->getRepository('StockBundle:Tva')->findAll();
+            return $this->render('tva/index.html.twig', array(
+                'tvas' => $tvas,
+                'result' => $result,
+                'form' => $form->createView(),
+            ));
         }
 
-        return $this->render('tva/new.html.twig', array(
-            'tva' => $tva,
+        return $this->render('tva/index.html.twig', array(
+            'tvas' => $tvas,
+            'result' => $result,
             'form' => $form->createView(),
         ));
     }
@@ -75,21 +82,37 @@ class TvaController extends Controller
     public function editAction(Request $request, Tva $tva)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $deleteForm = $this->createDeleteForm($tva);
-        $editForm = $this->createForm('Novatech\StockBundle\Form\TvaFormType', $tva);
-        $editForm->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        $tvas = $em->getRepository('StockBundle:Tva')->findAll();
+        $form = $this->createForm('Novatech\StockBundle\Form\TvaFormType', $tva);
+        $form->handleRequest($request);
+        $result = 0;
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('tva_edit', array('id' => $tva->getId()));
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $request->request->get($form->getName());
+            $tvaN = trim($data['tvaFacture']);
+            $t = $em->getRepository('StockBundle:Tva')->findOneByTvaFacture($tvaN);
+            if ($t and $t->getId() != $tva->getId()) {
+                $result = 1;
+            }else {
+                $em->persist($tva);
+                $em->flush();
+                return $this->redirectToRoute('tva_new');
+            }
+            $tvas = $em->getRepository('StockBundle:Tva')->findAll();
+            return $this->render('tva/index.html.twig', array(
+                'tvas' => $tvas,
+                'result' => $result,
+                'form' => $form->createView(),
+            ));
         }
 
-        return $this->render('tva/edit.html.twig', array(
-            'tva' => $tva,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+        return $this->render('tva/index.html.twig', array(
+            'tvas' => $tvas,
+            'result' => $result,
+            'form' => $form->createView(),
         ));
+
     }
 
     /**

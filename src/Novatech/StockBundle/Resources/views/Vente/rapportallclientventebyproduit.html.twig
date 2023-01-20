@@ -1,0 +1,105 @@
+{% extends "::base.html.twig" %}
+    {%block header%}
+        <section class="content-header">
+            <h1>
+                Rapport
+                <small></small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i>Accueil</a></li>
+                <li><a href="#">Rapport sur la vente</a></li>
+            </ol>
+        </section>
+    {%endblock%}
+    {%block body%}
+        <div class="box-header box box-success">
+            <h3 class="box-title">Rapport sur la vente</h3>
+
+
+        </div>
+        <div class="box-body">
+            <div class="callout callout-info" style="margin-bottom: 0!important;">
+                <h4><i class="fa fa-info"></i> Note:</h4>
+                Veuillez choisir vos options.
+            </div>
+            <br>
+
+            {{ form_start(form) }} {# Les erreurs générales du formulaire. #}
+            {{ form_errors(form) }}
+            <div class="row clearfix">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    {{ form_label(form.produit, "Produit", {'label_attr': {'class': 'form-label'}}) }}
+                    <div class="form-group  form-float">
+                        <div class="form-line">
+                            {{ form_widget(form.produit, {'attr': {'class': 'form-control', 'placeholder':'Produit'} }) }}  {# Affichage des erreurs pour ce champ précis. #} {{ form_errors(form.produit)
+                            }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    {{ form_label(form.dateFrom, "Date Debut", {'label_attr': {'class': 'form-label'}}) }}
+                    <div class="form-group  form-float">
+                        <div class="form-line">
+                            {{ form_widget(form.dateFrom, {'attr': {'class': 'form-control', 'placeholder':'Debut'} }) }}  {# Affichage des erreurs pour ce champ précis. #} {{ form_errors(form.dateFrom)
+                            }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    {{ form_label(form.dateTo, "Date Fin", {'label_attr': {'class': 'form-label'}}) }}
+                    <div class="form-group  form-float">
+                        <div class="form-line">
+                            {{ form_widget(form.dateTo, {'attr': {'class': 'form-control', 'placeholder':'Fin' } }) }}  {# Affichage des erreurs pour ce champ précis. #} {{ form_errors(form.dateTo)
+                            }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# Pour le bouton, pas de label ni d'erreur, on affiche juste le widget #}
+            <div class="pull-right">
+                <input type="submit" value="valider" class="btn bg-olive btn-flat margin"/>
+            </div>
+            {# Pour le bouton, pas de label ni d'erreur, on affiche juste le widget #}
+            {# Génération automatique des champs pas encore écrits. Dans cet exemple, ce serait le champ CSRF (géré automatiquement par Symfony !) et tous les champs cachés (type « hidden »). #} {{ form_rest(form) }} {# Fermeture de la balise
+                     <form> du formulaire HTML #}
+
+            {{ form_end(form) }}
+
+
+            <br>
+            <br> <br>
+            <br>
+
+
+            <table id="table_rapport" class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Nom client</th>
+                    <th>Nombre</th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th>Nom client</th>
+                    <th>Nombre</th>
+                </tr>
+                </tfoot>
+                <tbody>
+                {%if result==1%}
+                    {% for f in venteListe %}
+                        <tr>
+                            <td>{{ f.nomClient}}</td>
+                            <td>{{ f.produit }}</td>
+
+
+                        </tr>
+                    {%endfor%}
+
+                {% endif %}
+                </tbody>
+
+            </table>
+        </div>
+
+    {% endblock %}

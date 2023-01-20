@@ -29,6 +29,7 @@ class ClientController extends Controller {
 //Fonction d'ajout d'un client
     public function addClientAction(Request $request) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $clientListe = $this->getDoctrine()->getManager()->getRepository('ClientBundle:Client')->getAllClient();
         $em = $this->getDoctrine()->getManager();
         $result = 0;
         $client = new Client();     
@@ -44,8 +45,8 @@ class ClientController extends Controller {
             $lastId= $lastClientId[0]['id']+1;
             $referenceClient = 'CLIENT/'.$debutNum.$lastId;
             $data = $request->request->get($form->getName());
-            $nomClient = $data['nomClient'];
-            $numeroClient = $data['numeroClient'];
+            $nomClient = trim($data['nomClient']);
+            $numeroClient = trim($data['numeroClient']);
             $adresseClient = $data['adresseClient'];
             if ($em->getRepository('ClientBundle:Client')->findOneBynumeroClient($numeroClient)) {
                 $result = 1;   
@@ -63,7 +64,9 @@ class ClientController extends Controller {
                 $client = new Client();
                 $form = $this->createForm(ClientType::class, $client);
                 if ($em) {
-                    $result = 2;                
+                    $clientListe = $this->getDoctrine()->getManager()->getRepository('ClientBundle:Client')->getAllClient();
+                    $result = 2;
+                    return $this->render('ClientBundle:Client:ajouterClient.html.twig', array('result'=>$result ,'clientListe' => $clientListe,'form' => $form -> createView()));
                 } else {
                     $result = 3;
                 }
@@ -71,7 +74,7 @@ class ClientController extends Controller {
         } else {
             $result = 4;
         }
-        return $this->render('ClientBundle:Client:ajouterClient.html.twig', array('result'=>$result, 'form' => $form -> createView()));
+        return $this->render('ClientBundle:Client:ajouterClient.html.twig', array('result'=>$result ,'clientListe' => $clientListe,'form' => $form -> createView()));
     }
 
 //Fonction pour la modification d'un client
@@ -82,17 +85,20 @@ class ClientController extends Controller {
         $result = 0;
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($id);
-            $em->flush();
-            if ($em) {
-                $result = 2; 
-                unset($client);
-                return $this->render('ClientBundle:Client:listeClient.html.twig', array(
-            'result' => $result,'clientListe' => $clientListe ,'form' =>$form->createView()));                
-            } else {
-                $result = 3;
+            $data = $request->request->get($form->getName());
+            $numeroClient = trim($data['numeroClient']);
+            $cl = $em->getRepository('ClientBundle:Client')->findOneBynumeroClient($numeroClient);
+            if ($cl and $cl->getId() != $id->getId()) {
+                $result = 1;
+            }else {
+                $em->persist($id);
+                $em->flush();
+                if ($em) {
+                                        return $this->redirectToRoute('client_ajouter');
+                } else {
+                    $result = 3;
+                }
             }
- 
         }
         return $this->render('ClientBundle:Client:ajouterClient.html.twig', array(
             'result' => $result,'clientListe' => $clientListe ,'form' =>$form->createView()));

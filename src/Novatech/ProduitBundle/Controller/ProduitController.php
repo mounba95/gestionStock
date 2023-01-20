@@ -18,20 +18,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  * @author rmag
  */
 class ProduitController extends Controller {
-    
+
 //Fonction qui renvoie la liste des produit      
     public function listeProduitAction() {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $produitListe = $this->getDoctrine()->getManager()->getRepository('ProduitBundle:Produit')->findAll();
-           $result = 0;
-           return $this->render('ProduitBundle:Produit:listeProduit.html.twig', array('result'=>$result,'produitListe' => $produitListe));
-       }
+        $result = 0;
+        return $this->render('ProduitBundle:Produit:listeProduit.html.twig', array('result'=>$result,'produitListe' => $produitListe));
+    }
 //Fonction d'ajout d'un produit
     public function addProduitAction(Request $request) {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $em = $this->getDoctrine()->getManager();
+        $produitListe = $em->getRepository('ProduitBundle:Produit')->findAll();
         $result = 0;
-        $produit = new Produit();     
+        $produit = new Produit();
         $form = $this->createForm(ProduitType::class, $produit);
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $data = $request->request->get($form->getName());
@@ -45,15 +46,15 @@ class ProduitController extends Controller {
             $lastId= $lastProduitId[0]['id']+1;
             $referenceProduit = 'PRODUIT'.$debutNum.$lastId;
 
-            $nomProduit = $data['nomProduit'];
+            $nomProduit = trim($data['nomProduit']);
             $descriptionProduit = $data['descriptionProduit'];
             if ($em->getRepository('ProduitBundle:Produit')->findOneBynomProduit($nomProduit)) {
-                $result = 1;   
+                $result = 1;
             }else{
                 $produit
-                        ->setDescriptionProduit($descriptionProduit)
-                        ->setReferenceProduit($referenceProduit)
-                        ->setNomProduit($nomProduit);
+                    ->setDescriptionProduit($descriptionProduit)
+                    ->setReferenceProduit($referenceProduit)
+                    ->setNomProduit($nomProduit);
                 $em->persist($produit);
                 $em->flush();
                 unset($produit);
@@ -61,15 +62,17 @@ class ProduitController extends Controller {
                 $produit = new Produit();
                 $form = $this->createForm(ProduitType::class, $produit);
                 if ($em) {
-                    $result = 2;                
+                    $result = 2;
+                    $produitListe = $em->getRepository('ProduitBundle:Produit')->findAll();
+                    return $this->render('ProduitBundle:Produit:ajouterProduit.html.twig', array('result'=>$result, 'form' => $form -> createView(),'produitListe' => $produitListe));
                 } else {
                     $result = 3;
                 }
-        }
+            }
         } else {
             $result = 4;
         }
-        return $this->render('ProduitBundle:Produit:ajouterProduit.html.twig', array('result'=>$result, 'form' => $form -> createView()));
+        return $this->render('ProduitBundle:Produit:ajouterProduit.html.twig', array('result'=>$result, 'form' => $form -> createView(),'produitListe' => $produitListe));
     }
 
 //Fonction pour la modification d'un produit
@@ -80,17 +83,21 @@ class ProduitController extends Controller {
         $result = 0;
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($id);
-            $em->flush();
-            if ($em) {
-                $result = 2; 
-                unset($produit);
-                return $this->render('ProduitBundle:Produit:listeProduit.html.twig', array(
-            'result' => $result,'produitListe' => $produitListe ,'form' =>$form->createView()));                
-            } else {
-                $result = 3;
+            $data = $request->request->get($form->getName());
+            $nomProduit = trim($data['nomProduit']);
+            $pt = $em->getRepository('ProduitBundle:Produit')->findOneBynomProduit($nomProduit);
+            if($pt and $pt->getId() != $id->getId()) {
+                $result = 1;
+            }else {
+                $em->persist($id);
+                $em->flush();
+                if ($em) {
+                    return $this->redirectToRoute('produit_ajouter', array('result' => 2));
+                } else {
+                    $result = 3;
+                }
             }
- 
+
         }
         return $this->render('ProduitBundle:Produit:ajouterProduit.html.twig', array(
             'result' => $result,'produitListe' => $produitListe ,'form' =>$form->createView()));
@@ -102,10 +109,10 @@ class ProduitController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $em-> remove($id);
         $em-> flush();
-        
+
         if ($em) {
-            return $this->redirectToRoute('produit_liste');            
+            return $this->redirectToRoute('produit_liste');
         }
-                
-    }       
+
+    }
 }

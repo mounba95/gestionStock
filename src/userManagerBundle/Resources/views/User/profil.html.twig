@@ -1,1 +1,191 @@
-<h1>Welcome</h1>
+{% extends "::base.html.twig" %}
+{%block body%}
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Profil utilisateur
+        </h1>
+        <ol class="breadcrumb">
+            <li>
+                <a href="#">
+                    <i class="fa fa-dashboard"></i>
+                    Acceuil</a>
+            </li>
+            <li>
+                <a href="#">Profile</a>
+            </li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <div class="row">
+            <div
+                class="col-md-3">
+
+                <!-- Profile Image -->
+                <div class="box box-primary">
+                    <div class="box-body box-profile">
+                        <img alt="User profile picture" class="profile-user-img img-responsive img-circle" src="/templates/dist/img/profil4.png">
+
+                        <h3 class="profile-username text-center">{{ app.user.nom }}
+                            {{ app.user.prenom }}</h3>
+
+                        <p class="text-muted text-center">tel :
+                            {{ app.user.telephone }}</p>
+
+                        <ul class="list-group list-group-unbordered"></ul>
+
+                        <a href="{{ path('user_logout') }}" class="btn btn-primary btn-block">
+                            <b>Se déconnecter</b>
+                        </a>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+
+            <!-- About Me Box -->
+
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-9">
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a data-toggle="tab" href="#activity">Modifier profil & changer mot de passe
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="active tab-pane" id="activity">
+                            <form class="form-horizontal" method="post">
+                                <div class="col-md-6">
+                                    <div class="form-group col-md-12 ">
+                                        <label>Nom</label>
+                                        {{ form_widget(form.nom, {'attr': {'class': 'form-control'} }) }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group col-md-12">
+                                        <label>Prenom</label>
+                                        {{ form_widget(form.prenom, {'attr': {'class': 'form-control'} }) }}
+                                    </div>
+                                    <!-- /.form-group -->
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group col-md-12">
+                                        <label>Nom d'utilisateur</label>
+                                        {{ form_widget(form.username, {'attr': {'class': 'form-control'} }) }}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group col-md-12">
+                                        <label>Téléphone</label>
+                                        {{ form_widget(form.telephone, {'attr': {'class': 'form-control'} }) }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group col-md-12">
+                                        <label>Mot de passe</label>
+                                        {{ form_widget(form.password, {'attr': {'class': 'form-control', 'placeholder':'mot de passe','min':'0'} }) }}
+                                    </div>
+                                    <!-- /.form-group -->
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group col-md-12">
+                                        <label>Confirmez mot de passe</label>
+                                        {{ form_widget(form.confirm_password, {'attr': {'class': 'form-control', 'placeholder':'confirmez votre mot de passe '} }) }}
+                                        <div style="color: red">
+                                            {{ form_errors(form.confirm_password) }}
+                                        </div>
+                                    </div>
+                                    <!-- /.form-group -->
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <button class="btn btn-success">Modifier profile</button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                        <!-- /.tab-pane -->
+                        <div class="tab-pane" id="timeline"></div>
+                        <!-- /.tab-pane -->
+
+                        <div class="tab-pane" id="settings">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="inputName">Name</label>
+
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="inputName" placeholder="Name" type="email">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="inputEmail">Email</label>
+
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="inputEmail" placeholder="Email" type="email">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="inputName">Name</label>
+
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="inputName" placeholder="Name" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="inputExperience">Experience</label>
+
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="inputSkills">Skills</label>
+
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="inputSkills" placeholder="Skills" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox">
+                                                I agree to the
+                                                <a href="#">terms and conditions</a>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <button class="btn btn-danger" type="submit">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- /.tab-pane -->
+                    </div>
+                    <!-- /.tab-content -->
+                </div>
+                <!-- /.nav-tabs-custom -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+    </section>
+    <!-- /.content -->
+
+    <!-- /.content-wrapper -->
+</section>{% endblock %}

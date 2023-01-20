@@ -3,7 +3,6 @@
         <section class="content-header">
             <h1>
                 Utilisateurs
-                <small>Ajout d'un utilisateur</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i>Accueil</a></li>
@@ -31,28 +30,28 @@
                             <label>Nom</label>
                             {{ form_start(form) }}
                             {{ form_errors(form) }}
-                            {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'placeholder':'nom du client'} }) }}
+                            {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'placeholder':'nom'} }) }}
                         </div>
                         <!-- /.form-group -->
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Prenom</label>
-                            {{ form_widget(form.prenom, {'attr': {'class': 'form-control', 'placeholder':'adresse email client'} }) }}
+                            {{ form_widget(form.prenom, {'attr': {'class': 'form-control', 'placeholder':'prenom'} }) }}
                         </div>
                         <!-- /.form-group -->
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Pseudo</label>
-                            {{ form_widget(form.username, {'attr': {'class': 'form-control', 'placeholder':'adresse email client'} }) }}
+                            <label>Nom d'utilisateur</label>
+                            {{ form_widget(form.username, {'attr': {'class': 'form-control', 'placeholder':'nom d\'utilisateur'} }) }}
                         </div>
                         <!-- /.form-group -->
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Téléphone</label>
-                            {{ form_widget(form.telephone, {'attr': {'class': 'form-control', 'placeholder':'adresse email client'} }) }}
+                            {{ form_widget(form.telephone, {'attr': {'class': 'form-control', 'placeholder':'adresse'} }) }}
                         </div>
                         <!-- /.form-group -->
                     </div>
@@ -63,14 +62,12 @@
                         </div>
                         <!-- /.form-group -->
                     </div>
-                        <!-- /.form-group -->
-                    </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Confirmez mot de passe</label>
                             {{ form_widget(form.confirm_password, {'attr': {'class': 'form-control', 'placeholder':'confirmez votre mot de passe '} }) }}
                             <div style="color: red">
-                            {{ form_errors(form.confirm_password) }}
+                                {{ form_errors(form.confirm_password) }}
                             </div>
                         </div>
                         <!-- /.form-group -->
@@ -78,18 +75,14 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Rôle</label>
-                            {{ form_widget(form.roles) }}
-                            <div class="pull-right" >
-                                <input type="submit" value="valider" class="btn bg-olive btn-flat margin"/>
-                            </div>
-                            {{ form_end(form) }}
+                            {{ form_widget(form.roles, {'attr': {'class': 'form-control','min':'0'} }) }}
                         </div>
-                    </div>                    <!-- /.col -->
+                        <div class="pull-right" >
+                            <input type="submit" value="valider" class="btn bg-olive btn-flat margin"/>
+                        </div>
+                    </div>
+                    {{ form_end(form) }}<!-- /.col -->
                     <!-- /.row -->
-                </div>
-                <!-- /.box-body -->
-                <div class="box-footer">
-
                 </div>
             </div>
         </div>

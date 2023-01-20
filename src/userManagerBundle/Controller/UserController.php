@@ -8,8 +8,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 use userManagerBundle\Entity\User;
+use userManagerBundle\Form\ProfilType;
 use userManagerBundle\Form\UserType;
 
 class UserController extends Controller
@@ -62,13 +65,11 @@ class UserController extends Controller
      */
     public function loginAction(Request $request){
 
-
         /** @var $session Session */
         $session = $request->getSession();
 
         $authErrorKey = Security::AUTHENTICATION_ERROR;
         $lastUsernameKey = Security::LAST_USERNAME;
-
         // get the error if any (works with forward and redirect -- see below)
         if ($request->attributes->has($authErrorKey)) {
             $error = $request->attributes->get($authErrorKey);
@@ -105,11 +106,27 @@ class UserController extends Controller
     /**
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function ProfilAction(Request $request, User $user)
+    public function ProfilAction(Request $request)
     {
+        $session = $this->getUser();
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($session->getid());
+        $passwordEncoder = $this->get('security.password_encoder');
+        $form = $this->createForm(ProfilType::class, $user);
+        $form->handleRequest($request);
+        if ($request->isMethod('POST')){
 
+            $hash = $passwordEncoder->encodePassword($user, $user->getPassword());
+            $user->setPassword($hash);
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($user);
+            $manager->flush();
+
+        }
         return $this->render('userManagerBundle:User:profil.html.twig', [
-            'user'=>$user,
+            'user' => $user,
+            'form' => $form->createView(),
 
         ]);
 
@@ -122,14 +139,9 @@ class UserController extends Controller
 
         $user = new User();
         $em = $this->getDoctrine()->getManager();
-        $request = Request::createFromGlobals();
-
         $id = $request->query->get('id');
-
         $user = $em->getRepository(User::class)->find($id);
-
         $user->setStatus(1);
-
         $em->persist($user);
         $em->flush();
 
@@ -156,6 +168,39 @@ class UserController extends Controller
             $em->flush();
 
         return $this->redirectToRoute('user_liste');
+    }
+
+    /**
+     * Suppression
+     */
+    public function deleteAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository(User::class)->find($id);
+        $em->remove($user);
+        $em->flush();
+        return $this->redirectToRoute('user_liste');
+
+    }
+
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function ResetpasswordAction(){
+
+        $user = new User();
+        $em = $this->getDoctrine()->getManager();
+        $passwordEncoder = $this->get('security.password_encoder');
+        $request = Request::createFromGlobals();
+        $id = $request->query->get('id');
+        $user = $em->getRepository(User::class)->find($id);
+        $user->setPassword('12345678');
+        $hash = $passwordEncoder->encodePassword($user, $user->getPassword());
+        $user->setPassword($hash);
+        $em->persist($user);
+        $em->flush();
+        return $this->redirectToRoute('user_liste', array('result' => 1));
     }
 
 

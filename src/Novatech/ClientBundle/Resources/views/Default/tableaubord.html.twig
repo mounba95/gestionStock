@@ -11,11 +11,75 @@
         </section>
     {%endblock%}
     {%block body%}
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-     <img src="{{ asset('templates/accueil.jpg')}}" class="user-image" alt="User Image">
-     </div>
-{% endblock %}
-{%block partieJs%}
 
+        <div class="col-md-6">
+            <div class="box box-danger">
+                <div class="box-body chart-responsive">
+                    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="box box-success">
+                <div id="chartContainer2" style="height: 350px; width: 100%;"></div>
+                <br>
+                <br>
+            </div>
+        </div>
+        <script>
+            window.onload = function () {
+
+                var options = {
+                    animationEnabled: true,
+                    title: {
+                        text: "Les produits les plus vendus"
+                    },
+                    axisY: {
+                        title: "Nombre produit (en %)",
+                        suffix: "%",
+                        includeZero: false
+                    },
+                    axisX: {
+                        title: "Produits"
+                    },
+                    data: [{
+                        type: "column",
+                        yValueFormatString: "#,##0.0#"%"",
+                        dataPoints:  [ {% for p in data %}
+                            {label: '{{p.label}}', y: {{p.y}} },
+                            {% endfor %}]
+                    }]
+                };
+                $("#chartContainer2").CanvasJSChart(options);
+
+
+                var chart = new CanvasJS.Chart("chartContainer", {
+                    theme: "light1", // "light1", "light2", "dark1", "dark2"
+                    exportEnabled: true,
+                    animationEnabled: true,
+                    title: {
+                        text: "Produits vendus par type"
+                    },
+                    data: [{
+                        type: "pie",
+                        startAngle: 35,
+                        toolTipContent: "<b>{label}</b>: {y}%",
+                        showInLegend: "true",
+                        legendText: "{label}",
+                        indexLabelFontSize: 16,
+                        indexLabel: "{label} - {y}%",
+                        dataPoints: [ {% for t in dataType %}
+                            {label: '{{t.label}}', y: {{t.y}} },
+                            {% endfor %}]
+                    }]
+                });
+                chart.render();
+                0
+
+            }
+        </script>
+    {% endblock %}
+{%block partieJs%}
 
 {%endblock%}

@@ -13,6 +13,11 @@
         </section>
     {%endblock%}
     {%block body%}
+     <style>
+    #dashboard{
+        display:none;
+    }  
+    </style>
         <script type="text/javascript">
             function imprimer_page()
             {
@@ -102,26 +107,6 @@
                                     <td></td>
                                     <th>{{ montantTotal }} F CFA</th>
                                 </tr>
-                                {% if remise %}
-                                <tr>
-                                    <th>Remise</th>
-                                    <td></td>
-                                    <td></td>
-                                    <th>{{ remise }}%</th>
-                                </tr>
-                                <tr>
-                                    <th>Montant de Remise</th>
-                                    <td></td>
-                                    <td></td>
-                                    <th>{{ montantRemise }} F CFA</th>
-                                </tr>
-                                <tr>
-                                    <th>Montant HT après Remise</th>
-                                    <td></td>
-                                    <td></td>
-                                    <th>{{ nouveauMontantTotal }} F CFA</th>
-                                </tr>
-                                {% endif %}
                                 <tr>
                                     <th>
                                         TVA {% if tva == 100 %}

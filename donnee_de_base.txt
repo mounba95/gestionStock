@@ -1,0 +1,6 @@
+INSERT INTO `user` (`id`, `nom`, `prenom`, `username`, `roles`, `password`, `telephone`, `status`) VALUES
+(1, 'Boubacar', 'Harouna', 'boubacar', 'a:1:{i:0;s:10:\"ROLE_ADMIN\";}', '$2y$13$BEPHkSVzhtLDDbg9OngwXuUwJEFeXJ9kqL2dZTSRTBgBKCj4sDK/2', 91472478, 1),
+(3, 'admin', 'admin', 'admin', 'a:1:{i:0;s:10:\"ROLE_ADMIN\";}', '$2y$13$mVFUMHZa59EIByljw4mraOpcC3q36F6IxOb3oR0XjiW0Z1vSbDvH.', 12345, 1),
+(4, 'rmag', 'Rabiou', 'rmag', 'a:1:{i:0;s:9:\"ROLE_USER\";}', '$2y$13$mthx7haeKCVAls0Jyv66DOh0DggG.srpHzM7rE5qYX/RsMvDahdRm', 90407146, 1),
+(5, 'Arzika', 'Rabiou', 'arzika', 'a:1:{i:0;s:9:\"ROLE_USER\";}', '$2y$13$opLBuybtFVPJRbf4gjG4o.q3lfjiYsWzjMybFdGEZdA1rgdrYq3ha', 90785634, 1);
+

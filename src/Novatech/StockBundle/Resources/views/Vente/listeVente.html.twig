@@ -1,67 +1,94 @@
 {% extends "::base.html.twig" %}
     {%block header%}
-      <section class="content-header">
-      <h1>
-        Vente
-        <small></small>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i>Accueil</a></li>
-        <li><a href="{{path('vente_liste')}}">Liste ventes</a></li>
-      </ol>
-    </section>
+        <section class="content-header">
+            <h1>
+                Vente
+                <small></small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i>Accueil</a></li>
+                <li><a href="{{path('vente_liste')}}">Liste ventes</a></li>
+            </ol>
+        </section>
     {%endblock%}
     {%block body%}
-         <div class="box-header box box-success">
-             <h3 class="box-title">Liste des ventes</h3>
-   
-<div class="pull-right" >
-                                <a href="{{path('vente_ajouter')}}"  class="btn bg-olive btn-flat margin">Ajouter Vente</a>
-                            </div>  
+        <div class="box-header box box-success">
+            <h3 class="box-title">Liste des ventes</h3>
+
+            <div class="pull-right" >
+                <a href="{{path('vente_ajouter')}}"  class="btn bg-olive btn-flat margin">Ajouter Vente</a>
+            </div>
         </div>
 
         <div class="box-body">
             <table id="table_vente" class="table table-bordered">
                 <thead>
-                    <tr>
-                        <th>Reference </th>
-                        <th>Offre</th>
-                        <th>Modifier</th>
-                        <th>Detail</th>
-                    </tr>
+                <tr>
+                    <th>Reference </th>
+                    <th>Client </th>
+                    <th>Date</th>
+                    <th>Mode de paiement</th>
+                    <th>Etat</th>
+                    <th>Détail</th>
+                    <th>Annuler</th>
+                </tr>
                 </thead>
                 <tfoot>
-                 <tr>
-                        <th>Reference </th>
-                        <th>Offre</th>
-                        <th>Modifier</th>
-                        <th>Detail</th>
-                    </tr>
+                <tr>
+                    <th>Reference </th>
+                    <th>Client </th>
+                    <th>Date</th>
+                    <th>Mode de paiement</th>
+                    <th>Etat</th>
+                    <th>Détail</th>
+                    <th>Annuler</th>
+                </tr>
                 </tfoot>
                 <tbody>
-                    {% for liste in devisListe %}
-                        <tr>
-                            <td>{{ liste.referenceFacture }}</td>
-                            <td>{{ liste.offre }}</td>
-                            <td>
-                            {% if liste.statut == 0 %}
-                            <a class="btn btn-primary" href="{{ path('vente_modifier', {'id': liste.id}) }}">Modifier</i></a>
-                            {% elseif liste.statut == 1 %}
-                                 <span class="label label-success label-mini">Validée</span>
+                {% for liste in devisListe %}
+                    <tr>
+                        <td>{{ liste.referenceFacture }}</td>
+                        <td>{% if  liste.client %} {{ liste.client.nomClient }} {% endif %}</td>
+                        <td>{{ liste.dateFacture |date('d-m-Y H:i:s') }}</td>
+                        <td>
+                            {% if liste.typeReglementFacture == 2 %}
+                                <b>
+                                    <span class="label label-primary label-mini">Patiel</span>
+                                </b>
+                            {% else %}
+                                <b>
+                                    <span class="label label-info label-mini">Total</span>
+                                </b>
                             {% endif %}
-                            </td>
+                        </td>
+                        <td>
+                            {% if liste.statut == 0%}
+                                <span class="label label-warning label-mini">En cours de paiement</span>
+                            {% elseif liste.statut == 1 and liste.typeReglementFacture == 2 and liste.statutVersement == 2 %}
+                                <span class="label label-success label-mini">Validée & payée</span>
+                            {% elseif liste.statut == 1 and liste.typeReglementFacture == 2 and liste.statutVersement != 2 %}
+                                <span class="label label-warning label-mini">Validé mais en cours de paiement</span>
+                            {% elseif liste.statut == 1 and liste.typeReglementFacture == 1 %}
+                                <span class="label label-success label-mini">Validée & payée</span>
+                            {% elseif liste.statut == 4 %}
+                                <span class="label label-danger label-mini">Annuler</span>
+                            {% endif %}
+                        </td>
 
-                            <td>
-                            {% if liste.statut == 0 %}
-                            <a class="btn btn-info" href="{{ path('produitvente_ajouter', {'idVente': liste.id}) }}" >Detail</a></td>
-                            {% elseif liste.statut == 1 %}
-                            <a class="btn btn-info" href="{{ path('vente_imprimerrecu', {'idVente': liste.id}) }}" >Detail</a></td>
+                        <td>
+                             <a class="btn btn-info" href="{{ path('produitvente_ajouter', {'idVente': liste.id}) }}" >Detail</a></td>
+                    
+                        <td>
+                            {% if liste.statut == 4 or liste.statut == 0 %}
+                            {% else %}
+                                <a class="btn btn-danger" href="{{ path('vente_annuler', {'idVente': liste.id}) }} " onclick="return confirm('Voulez-vous vraiment annuler cette vente?');">Annuler</a>
                             {% endif %}
-                         
-                        </tr>
-                    {%endfor%}
+                        </td>
+
+                    </tr>
+                {%endfor%}
                 </tbody>
             </table>
         </div>
 
-{% endblock %}
+    {% endblock %}

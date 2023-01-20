@@ -1,3 +1,11 @@
+compte_compte:
+    resource: "@CompteBundle/Controller/CompteController.php"
+    type:     annotation
+
+compte:
+    resource: "@CompteBundle/Resources/config/routing.yml"
+    prefix:   /
+
 user_manager:
     resource: "@userManagerBundle/Resources/config/routing.yml"
     prefix:   /

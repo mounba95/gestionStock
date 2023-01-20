@@ -59,7 +59,7 @@
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
-                  <label>Quantité livrée</label>
+                  <label>Quantité reçue</label>
                             {{ form_widget(form.quantiteProduitFournisseur, {'attr': {'class': 'form-control', 'placeholder':'quantité livrée', 'min':'0'} }) }}
                   </div>
                   <!-- /.form-group -->
@@ -74,14 +74,14 @@
                 <div class="col-md-6">
                   <div class="form-group">
                   <label>Prix d'achat par unité</label>
-                            {{ form_widget(form.stock.prixProduit, {'attr': {'class': 'form-control', 'placeholder':'prix d entré produit', 'min':'0'} }) }}
+                            {{ form_widget(form.prixProduitFournisseur, {'attr': {'class': 'form-control', 'placeholder':'prix d entré produit', 'min':'0'} }) }}
                   </div>
                   <!-- /.form-group -->
                 </div>
                   <div class="col-md-6">
                   <div class="form-group">
                   <label>Prix de vente par unité</label>
-                            {{ form_widget(form.prixProduitFournisseur, {'attr': {'class': 'form-control', 'placeholder':'prix de vente du produit', 'min':'0'} }) }}
+                            {{ form_widget(form.stock.prixProduit, {'attr': {'class': 'form-control', 'placeholder':'prix de vente du produit', 'min':'0'} }) }}
                   </div>
                   <!-- /.form-group -->
                 </div>

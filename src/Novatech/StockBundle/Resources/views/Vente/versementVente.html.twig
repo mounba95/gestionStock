@@ -1,0 +1,205 @@
+{% extends "::base.html.twig" %}
+{%block header%}
+    <section class="content-header">
+        <h1>
+            Gérer paiement
+            <small></small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i>Accueil</a></li>
+
+        </ol>
+    </section>
+{%endblock%}
+
+{%block body%}
+    <div style="padding: 25px;">
+        <h1>Gestion de paiement d'une vente</h1>
+        <div class="pull-right">
+            <a class="btn bg-olive btn-flat margin" href="{{ path('vente_liste') }}">Retour à la liste des ventes</a>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table">
+                    <tr>
+                        <th><p>Référence vente </th>
+                        <td>{{ facture.referenceFacture }} </td>
+                    </tr>
+                    <tr>
+                        <th>Client</th>
+                        <td>
+                            {% if client == 'null' %}
+                            {% else %}
+                                {{ client.nomClient }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr class="success">
+                        <th>
+                            Montant total à verser
+                        </th>
+                        <td>
+                            {{ montantTotal }}
+                        </td>
+                    </tr>
+                    <tr class="info">
+                        <th>
+                            Montant total versé
+                        </th>
+                        <td>
+                            {{ facture.montantVerseFacture }}
+                        </td>
+                    </tr>
+                    <tr class="warning">
+                        <th>
+                            Montant à completer
+                        </th>
+                        <td>
+                            {{montantTotal - facture.montantVerseFacture }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Mode de paiement</th>
+                        <td>
+                            {% if facture.typeReglementFacture == 2 %}
+                                Patiel
+                            {% else %}
+                                Total
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Date</th>
+                        <td> {{ facture.dateFacture |date('d-m-Y H:i:s')}}</td>
+                    </tr>
+                    <tr>
+                        <th>Etat vente</th>
+                        <td>
+                            {% if facture.statut == 0 %}
+                                <span class="label label-danger label-mini">Non validée</span>
+                            {% elseif facture.statut == 1 %}
+                                <span class="label label-success label-mini">Validée</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Etat de paiement</th>
+                        <td>
+                            {% if facture.statutVersement == 2 %}
+                                <span class="label label-success label-mini">Payé</span>
+                            {% else %}
+                                <span class="label label-warning label-mini">En cours de paiement</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+                <a class="btn bg-blue-gradient btn-info margin" href="{{ path('produitvente_ajouter', {'idVente': facture.id}) }}" >Détail vente</a>
+                <a href="{{path('imprimer_versement', {'idVente':facture.id})}}"  class="btn bg-primary btn-default margin">Imprimer</a>
+            </div>
+            <!-- /.col -->
+            <div class="col-xs-6">
+                {% if facture.statutVersement == 2 %}
+                    <div class="alert alert-info alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+                        Vous avez payé la totalité du montant de la vente.
+                    </div>
+                {% else %}
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Formulaire pour les opérations</h3>
+                        </div>
+                        <div class="box-body">
+
+                            <div class="form-group">
+                                <label>Montant</label>
+                                {{ form_start(form) }}
+                                {{ form_widget(form.montantVersement, {'attr': {'class': 'form-control', 'placeholder':'Montant à verser','min':'0'} }) }}
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                {{ form_widget(form.descriptionVersement, {'attr': {'class': 'form-control', 'placeholder':'Description operation'} }) }}
+                            </div>
+                            <div class="pull-right" >
+                                <a href=""  class="btn bg-maroon btn-flat refresh">Annuler</a>
+                                <input type="submit" value="valider" class="btn bg-olive btn-flat margin"/>
+                                {{ form_end(form) }}
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                {% endif %}
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+        {% if result == 5 %}
+            <div class="alert alert-info alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Veuillez remplir les champs pour ajouter un nouveau compte</strong>
+            </div>
+        {% elseif result == 1 %}
+            <div class="alert alert-danger alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Utilisateur non trouvé.</strong>
+            </div>
+        {% elseif result == 2 %}
+            <div class="alert alert-danger alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Le montant saisir est nettement superieur au reste du montant à verser.</strong>
+            </div>
+
+        {% elseif result == 3 %}
+            <div class="alert alert-success alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Enregistrement éffectué avec succée.</strong>
+            </div>
+        {% elseif result == 4 %}
+            <div class="alert alert-danger alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Une erreur s'est produite.</strong>
+            </div>
+        {% endif %}
+        </br>
+        <div class="box box-danger">
+            <div class="box-header with-border">
+                <h3 class="box-title">Historique des versements</h3>
+            </div>
+            <div class="box-body">
+                <table id="table_versement" class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Montant versé</th>
+                        <th>Employé</th>
+                        <th>Date </th>
+                        <th>Description </th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th>Id</th>
+                        <th>Montant versé</th>
+                        <th>Employé</th>
+                        <th>Date </th>
+                        <th>Description </th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    {% for versement in versements %}
+                        <tr>
+                            <td>{{ versement.id }}</td>
+                            <td>{{ versement.montantVersement }}</td>
+                            <td>{{ versement.user.nom  }} {{ versement.user.prenom  }}</td>
+                            <td>{% if versement.dateVersement %}{{ versement.dateVersement|date('Y-m-d H:i:s') }}{% endif %}</td>
+                            <td>{{ versement.descriptionVersement }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </div>
+
+{% endblock %}

@@ -23,6 +23,7 @@ class AppKernel extends Kernel
             new Novatech\InformationBundle\InformationBundle(),
             new Novatech\FournisseurBundle\FournisseurBundle(),
             new userManagerBundle\userManagerBundle(),
+            new Banque\CompteBundle\CompteBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

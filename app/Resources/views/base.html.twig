@@ -5,594 +5,644 @@ scratch. This page gets rid of all links and provides the needed markup only.
 -->
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>gestion facture</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.6 -->
-  <link rel="stylesheet" href="{{ asset('templates/bootstrap/css/bootstrap.min.css') }}">
-  <!--<link rel="stylesheet" href="{{ asset('templates/bootstrap/css/mdb.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('templates/bootstrap/css/mdb.css') }}">
-  <link rel="stylesheet" href="{{ asset('templates/bootstrap/css/style.min.css') }}">-->
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="{{ asset('templates/dist/css/AdminLTE.min.css') }}">
+    <meta charset="utf-8">
+    <title>gestion stock</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="icon" type="image/png" href="{{ asset('templates/logo.jpg') }}" />
+    <!-- Bootstrap 3.3.6 -->
+    <link rel="stylesheet" href="{{ asset('templates/bootstrap/css/bootstrap.min.css') }}">
 
-  <link rel="stylesheet" href="{{ asset('templates/dist/css/skins/_all-skins.min.css')}}">
+    <!-- Font Awesome -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">-->
+    <link rel="stylesheet" href="{{ asset('templates/bower_components/font-awesome/css/font-awesome.min.css') }}">
+    <!-- Ionicons -->
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">-->
+    <link rel="stylesheet" href="{{ asset('templates/bower_components/Ionicons/css/ionicons.min.css') }}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{ asset('templates/bower_components/select2/dist/css/select2.min.css') }}">
 
-  <link rel="stylesheet" href="{{ asset('templates/plugins/datatables/dataTables.bootstrap.css')}}">
-  <link rel="stylesheet" href="{{ asset('templates/plugins/datatables/buttons.dataTables.min.css' )}}" >
+    <link rel="stylesheet" href="{{ asset('templates/dist/css/AdminLTE.min.css') }}">
+    <script src="{{ asset('templates/script.js') }}"></script>
 
-  <div class="preloader">
-    <div class="cssload-speeding-wheel"></div>
-  </div>
+    <link rel="stylesheet" href="{{ asset('templates/dist/css/skins/_all-skins.min.css')}}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet" href="{{ asset('templates/plugins/datatables/dataTables.bootstrap.css')}}">
+    <link rel="stylesheet" href="{{ asset('templates/plugins/datatables/buttons.dataTables.min.css' )}}" >
+
+    <style>
+        #backButton {
+            border-radius: 4px;
+            padding: 8px;
+            border: none;
+            font-size: 16px;
+            background-color: #2eacd1;
+            color: white;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+        .invisible {
+            display: none;
+        }
+    </style>
+
+
+
+    <div class="preloader">
+        <div class="cssload-speeding-wheel"></div>
+    </div>
 </head>
 
-  
+
 
 <body class="hold-transition skin-green fixed sidebar-mini">
 <div class="wrapper">
 
-  <!-- Main Header -->
-  <header class="main-header">
+    <!-- Main Header -->
+    <header class="main-header">
 
-    <!-- Logo -->
-    <a href="{{ path('tableau_bord') }}" class="logo">
-      <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>G</b>ST</span>
-      <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>GestionSTOCK</b></span>
-    </a>
+        <!-- Logo -->
+        <a href="{{ path('tableau_bord') }}" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><b>G</b>ST</span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>GestionSTOCK</b></span>
+        </a>
 
-    <!-- Header Navbar -->
-    <nav class="navbar navbar-static-top" role="navigation">
-      <!-- Sidebar toggle button-->
-      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-        <span class="sr-only">Toggle navigation</span>
-      </a>
-      <!-- Navbar Right Menu -->
-      <div class="navbar-custom-menu">
-        <ul class="nav navbar-nav">
-
-          <!-- User Account Menu -->
-          <li class="dropdown user user-menu ">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-              <img src="{{ asset('templates/dist/img/user2-160x160.jpg')}}" class="user-image" alt="User Image">
-              {% if app.user %}
-              <span class="hidden-xs">{{ app.user.nom }}</span>
-              {% endif %}
+        <!-- Header Navbar -->
+        <nav class="navbar navbar-static-top" role="navigation">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
             </a>
-            <ul class="dropdown-menu">
-              <!-- User image -->
-              <li class="user-header">
-                <img src="{{ asset('templates/dist/img/user2-160x160.jpg')}}" class="img-circle" alt="User Image">
+            <!-- Navbar Right Menu -->
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
 
-                <p>
-                  {% if app.user %}
-                  {{ app.user.nom }}{{ app.user.prenom }}
-                  {% endif %}
-                  <small>Member since Nov. 2012</small>
-                </p>
-              </li>
-              <!-- Menu Body -->
-                <!-- /.row -->
-              </li>
-              <!-- Menu Footer-->
-              <li class="user-footer">
-                <div class="pull-left">
-                {% if app.user %}
-                  <a href="{{ path('user_profil', {'id': app.user.id})  }}" class="btn btn-default btn-flat">Profile</a>
-                  {% endif %}
+                    <!-- User Account Menu -->
+                    <li class="dropdown user user-menu ">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                            <img src="{{ asset('templates/dist/img/profil.png')}}" class="user-image" alt="User Image">
+                            {% if app.user %}
+                                <span class="hidden-xs">{{ app.user.nom }}</span>
+                            {% endif %}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <img src="{{ asset('templates/dist/img/profil.png')}}" class="img-circle" alt="User Image">
+
+                                <p>
+                                    {% if app.user %}
+                                        {{ app.user.nom }} &nbsp; {{ app.user.prenom }}
+                                    {% endif %}
+                                    <small></small>
+                                </p>
+                            </li>
+                            <!-- Menu Body -->
+                            <!-- /.row -->
+                            </li>
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    {% if app.user %}
+                                        <a href="{{ path('user_profil', {'id': app.user.id})  }}" class="btn btn-default btn-flat">Profile</a>
+                                    {% endif %}
+                                </div>
+                                <div class="pull-right">
+                                    <a href="{{ path('user_logout') }}" class="btn btn-default btn-flat">Se déconnecter</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>-->
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar fixed">
+
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+
+            <!-- Sidebar user panel (optional) -->
+            <div class="user-panel">
+                <div class="pull-left image">
                 </div>
-                <div class="pull-right">
-                  <a href="{{ path('user_logout') }}" class="btn btn-default btn-flat">Deconnection</a>
+                <div class="pull-left info">
+
                 </div>
-              </li>
-            </ul>
-          </li>
-         <!-- <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>-->
-        </ul>
-      </div>
-    </nav>
-  </header>
-  <!-- Left side column. contains the logo and sidebar -->
-  <aside class="main-sidebar fixed">
+            </div>
 
-    <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
-
-      <!-- Sidebar user panel (optional) -->
-      <div class="user-panel">
-        <div class="pull-left image">
-        </div>
-        <div class="pull-left info">
-
-        </div>
-      </div>
-
-      <!-- search form (Optional) -->
-      <form action="#" method="get" class="sidebar-form">
-        <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Search...">
-          <span class="input-group-btn">
+            <!-- search form (Optional) -->
+            <form action="#" method="get" class="sidebar-form">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Search...">
+                    <span class="input-group-btn">
                 <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
                 </button>
               </span>
-        </div>
-      </form>
-      <!-- /.search form -->
+                </div>
+            </form>
+            <!-- /.search form -->
 
-      <!-- Sidebar Menu -->
-      <ul class="sidebar-menu">
-        <li class="header">Menu</li>
-        <!-- Optionally, you can add icons to the links -->
-         {% if is_granted('ROLE_ADMIN') %}
-        <li class="treeview">
-          <a href="#"><i class="fa fa-gg"></i> <span>Gestion produit</span>
-            <span class="pull-right-container">
+            <!-- Sidebar Menu -->
+            <ul class="sidebar-menu">
+                <li class="header">Menu</li>
+                <li class="active"><a href="{{path('tableau_bord')}}"><i class="fa fa-home"></i> <span>Tableau de bord</span></a></li>
+                <!-- Optionally, you can add icons to the links -->
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="treeview">
+                        <a href="#"><i class="fa fa-gg"></i> <span>Gestion produit</span>
+                            <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="{{path('produit_type_liste')}}"><i class="fa fa-list-alt"></i>Lister type</a></li>
-            <li><a href="{{path('produit_liste')}}"><i class="fa fa-list-alt"></i>Lister produit</a></li>
-          </ul>
-        </li>
-        {% endif %}
-        <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Gestion stock</span>
-            <span class="pull-right-container">
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="{{path('produit_type_ajouter')}}"><i class="fa fa-list-alt"></i>Type produit</a></li>
+                            <li><a href="{{path('produit_ajouter')}}"><i class="fa fa-list-alt"></i>Produit</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-link"></i> <span>Gestion stock</span>
+                        <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="{{path('stock_liste')}}"><i class="fa fa-list-alt"></i>Stock</a></li>
-             {% if is_granted('ROLE_ADMIN') %}
-            <li><a href="{{path('approvisioner_liste')}}"><i class="fa fa-list-alt"></i>Historique appro</a></li>
-            {% endif %}
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#"><i class="fa fa-user"></i> <span>Gestion client</span>
-            <span class="pull-right-container">
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{path('stock_liste')}}"><i class="fa fa-list-alt"></i>Stock</a></li>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li><a href="{{path('approvisioner_liste')}}"><i class="fa fa-list-alt"></i>Historique appro</a></li>
+                            <li><a href="{{path('stock_inventaire')}}"><i class="fa fa-building-o"></i>Inventaire du stock</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-user"></i> <span>Gestion client</span>
+                        <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="{{path('client_liste')}}"><i class="fa fa-list-alt"></i>Lister client</a></li>
-          </ul>
-        </li>
-         {% if is_granted('ROLE_ADMIN') %}
-        <li class="treeview">
-          <a href="#"><i class="fa fa-users"></i> <span>Gestion fournisseur</span>
-            <span class="pull-right-container">
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{path('client_ajouter')}}"><i class="fa fa-list-alt"></i>Client</a></li>
+                    </ul>
+                </li>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="treeview">
+                        <a href="#"><i class="fa fa-users"></i> <span>Gestion fournisseur</span>
+                            <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="{{path('fournisseur_liste')}}"><i class="fa fa-list-alt"></i>Lister fournisseur</a></li>
-          </ul>
-        </li>
-        {% endif %}
-        <li class="treeview">
-          <a href="#"><i class="fa fa-money"></i> <span>Gestion vente</span>
-            <span class="pull-right-container">
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="{{path('fournisseur_ajouter')}}"><i class="fa fa-list-alt"></i>Fournisseur</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-money"></i> <span>Gestion vente</span>
+                        <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{path('vente_ajouter')}}"><i class="fa fa-save"></i> créer un vente</a></li>
+                        <li><a href="{{path('vente_liste')}}"><i class="fa fa-list-alt"></i>Liste des ventes</a></li>
+                        <!--
+                        <li><a href="{{path('vente_liste_partiel')}}"><i class="fa fa-list-alt"></i>Ventes avec paiement partiel</a></li>
+                        <li><a href="{{path('vente_liste_total')}}"><i class="fa fa-list-alt"></i>Ventes avec paiement total</a></li>
+                        -->
+                    </ul>
+                </li>
+                <!--
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-link"></i> <span>Gestion devis</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{path('achat_ajouter')}}"><i class="fa fa-save"></i> créer un devis</a></li>
+                        <li><a href="{{path('achat_liste')}}"><i class="fa fa-list-alt"></i>Liste des devis</a></li>
+                    </ul>
+                </li>
+                -->
+                {% if is_granted('ROLE_ADMIN') %}
+
+                    <li class="treeview">
+                        <a href="#"><i class="fa fa-bank"></i> <span>Gestion compte</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="{{path('compte_ajouter')}}"><i class="fa fa-list-alt"></i>Compte</a></li>
+                            <li><a href="{{path('chiffreAffaire_rapport_all')}}"><i class="fa fa-list-alt"></i>Rapport compte</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="treeview">
+                        <a href="#"><i class="fa fa-users"></i> <span>Gestion des utilisateurs</span>
+                            <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="{{path('vente_ajouter')}}"><i class="fa fa-save"></i> créer un vente</a></li>
-            <li><a href="{{path('vente_liste')}}"><i class="fa fa-list-alt"></i>Liste des ventes</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Gestion devis</span>
-            <span class="pull-right-container">
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="{{path('user_liste')}}"><i class="fa fa-list-alt"></i>Liste des utilisateurs</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="treeview">
+                        <a href="#"><i class="fa fa-files-o"></i> <span>Rapport</span>
+                            <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="{{path('achat_ajouter')}}"><i class="fa fa-save"></i> créer un devis</a></li>
-            <li><a href="{{path('achat_liste')}}"><i class="fa fa-list-alt"></i>Liste des devis</a></li>
-          </ul>
-        </li>
-         {% if is_granted('ROLE_ADMIN') %}
-        <li class="treeview">
-          <a href="#"><i class="fa fa-users"></i> <span>Gestion des utilisateurs</span>
-             <span class="pull-right-container">
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="{{path('vente_rapport_all')}}"><i class="fa fa-calendar-minus-o"></i>Tableau complet </a></li>
+                           <!-- <li><a href="{{path('vente_rapport_allproduit')}}"><i class="fa fa-align-justify"></i>Par période & produit</a></li>
+                            <li><a href="{{path('vente_rapport_by_user')}}"><i class="fa fa-user"></i>Par utilisateur & période</a></li>
+                            <li><a href="{{path('vente_rapport_by_user_byproduit')}}"><i class="fa fa-calendar-minus-o"></i>Par utilisateur & période & produit</a></li>
+                            <li><a href="{{path('vente_rapport_by_user')}}"><i class="fa fa-calendar-minus-o"></i>Par période & produit & client</a></li>
+                            <li><a href="{{path('vente_rapport_byclientproduit')}}"><i class="fa fa-calendar-minus-o"></i>Par période & client</a></li>
+                            <li><a href="{{path('ventenonvalider_rapport_byclientproduit')}}"><i class="fa fa-calendar-minus-o"></i>Par client & vente non validée</a></li> -->
+                        </ul>
+                    </li>
+
+                    <li class="treeview">
+                        <a href="#"><i class="fa fa-gears"></i> <span>Parametres</span>
+                            <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="{{path('user_liste')}}"><i class="fa fa-list-alt"></i>Liste des utilisateurs</a></li>
-          </ul>
-        </li>
-       
-         <li class="treeview">
-          <a href="#"><i class="fa fa-files-o"></i> <span>Rapport</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="{{path('vente_rapport_all')}}">Par période </a></li>
-            <li><a href="{{path('vente_rapport_by_user')}}">Par utilisateur & période</a></li>
-          </ul>
-        </li>
-       
-           <li class="treeview">
-          <a href="#"><i class="fa fa-gears"></i> <span>Parametres</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="{{path('information_liste')}}"><i class="fa fa-info-circle"></i> Information</a></li>
-            <li><a href="{{path('tva_index')}}"><i class="fa fa-external-link-square"></i> TVA</a></li>
-          </ul>
-        </li>
-        {% endif %}
-      </ul>
-      <!-- /.sidebar-menu -->
-    </section>
-    <!-- /.sidebar -->
-  </aside>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="{{path('information_liste')}}"><i class="fa fa-info-circle"></i> Information</a></li>
+                            <!-- <li><a href="{{path('tva_new')}}"><i class="fa fa-external-link-square"></i> TVA</a></li>-->
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+            <!-- /.sidebar-menu -->
+        </section>
+        <!-- /.sidebar -->
+    </aside>
 
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-      {%block header%}
-      {%endblock%}
-    
-    <section class="content">
-     <div class="row" id="dashboard">
-      {% if is_granted('ROLE_USER') %}
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-aqua">
-            <div class="inner">
-              <h3>{{ render(controller('StockBundle:Achat:getMontantTotalVenteParDayParUser')) }}</h3>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        {%block header%}
+        {%endblock%}
 
-              <p>Montant total de la vente</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-bag"></i>
-            </div>
-            <a href="#" class="small-box-footer">Plus d'info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-green">
-            <div class="inner">
-              <h3>{{ render(controller('StockBundle:Achat:getNombreVenteParDayParUser')) }}</h3>
+        <section class="content">
+            <div class="row" id="dashboard">
+                {% if is_granted('ROLE_USER') %}
+                    <div class="col-lg-3 col-xs-6">
+                        <!-- small box -->
+                        <div class="small-box bg-aqua">
+                            <div class="inner">
+                                <h3>{{ render(controller('StockBundle:Achat:getMontantTotalVenteParDayParUser')) }}</h3>
 
-              <p>Nombre de ventes de la journée</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-stats-bars"></i>
-            </div>
-            <a href="#" class="small-box-footer">Plus d'info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-yellow">
-            <div class="inner">
-              <h3>{{ render(controller('StockBundle:Achat:getNombreProduitVendusParDayParUser')) }} </h3>
+                                <p>Récette de la journée</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-bag"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">Plus d'info <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-xs-6">
+                        <!-- small box -->
+                        <div class="small-box bg-green">
+                            <div class="inner">
+                                <h3>{{ render(controller('StockBundle:Achat:getMontantTotalCreditVenteParDayParUser')) }}</h3>
 
-              <p>Produits vendus dans la journée</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-person-add"></i>
-            </div>
-            <a href="#" class="small-box-footer">Plus d'info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-red">
-            <div class="inner">
-              <h3>{{ render(controller('StockBundle:Stock:getNombreStock')) }}</h3>
+                                <p>Crédit de la jounée</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">Plus d'info <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-xs-6">
+                        <!-- small box -->
+                        <div class="small-box bg-yellow">
+                            <div class="inner">
+                                <h3>{{ render(controller('StockBundle:Achat:getNombreVenteParDayParUser')) }} </h3>
 
-              <p>Nombre de produits en stock</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-pie-graph"></i>
-            </div>
-            <a href="{{path('stock_liste')}}" class="small-box-footer">Plus d'info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-      </div>
-      {% elseif is_granted('ROLE_ADMIN') %}
-         <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-aqua">
-            <div class="inner">
-              <h3>{{ render(controller('StockBundle:Achat:getMontantTotalVenteParDay')) }}</h3>
+                                <p>Nombre de ventes de la journée</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-person-add"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">Plus d'info <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-xs-6">
+                        <!-- small box -->
+                        <div class="small-box bg-red">
+                            <div class="inner">
+                                <h3>{{ render(controller('StockBundle:Stock:getNombreStock')) }}</h3>
 
-              <p>Montant total de la vente</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-bag"></i>
-            </div>
-            <a href="#" class="small-box-footer">Plus d'info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-green">
-            <div class="inner">
-              <h3>{{ render(controller('StockBundle:Achat:getNombreVenteParDay')) }}</h3>
+                                <p>Nombre de produits en stock</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-pie-graph"></i>
+                            </div>
+                            <a href="{{path('stock_liste')}}" class="small-box-footer">Plus d'info <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                {% elseif is_granted('ROLE_ADMIN') %}
+                    <div class="col-lg-3 col-xs-6">
+                        <!-- small box -->
+                        <div class="small-box bg-aqua">
+                            <div class="inner">
+                                <h3>{{ render(controller('StockBundle:Achat:getMontantTotalVenteParDay')) }}</h3>
 
-              <p>Nombre de ventes de la journée</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-stats-bars"></i>
-            </div>
-            <a href="#" class="small-box-footer">Plus d'info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-yellow">
-            <div class="inner">
-              <h3>{{ render(controller('StockBundle:Achat:getNombreProduitVendusParDay')) }} </h3>
+                                <p>Récette de la journée</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-bag"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">Plus d'info <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-xs-6">
+                        <!-- small box -->
+                        <div class="small-box bg-green">
+                            <div class="inner">
+                                <h3>{{ render(controller('StockBundle:Achat:getMontantTotalCreditVenteParDay')) }}</h3>
 
-              <p>Produits vendus dans la journée</p>
+                                <p>Crédit de la journée</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">Plus d'info <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-xs-6">
+                        <!-- small box -->
+                        <div class="small-box bg-yellow">
+                            <div class="inner">
+                                <h3>{{ render(controller('StockBundle:Achat:getNombreVenteParDay')) }}</h3>
+
+                                <p>Nombre ventes de la journée</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-person-add"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">Plus d'info <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-xs-6">
+                        <!-- small box -->
+                        <div class="small-box bg-red">
+                            <div class="inner">
+                                <h3>{{ render(controller('StockBundle:Stock:getNombreStock')) }}</h3>
+
+                                <p>Nombre de produits en stock</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-pie-graph"></i>
+                            </div>
+                            <a href="{{path('stock_liste')}}" class="small-box-footer">Plus d'info <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                {% endif %}
             </div>
-            <div class="icon">
-              <i class="ion ion-person-add"></i>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div style="padding-left: 13px; padding-right: 13px;">
+                        <div class="box" >
+                            {%block body%}
+
+                            {%endblock%}
+                        </div>
+                    </div>
+                </div>
             </div>
-            <a href="#" class="small-box-footer">Plus d'info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-red">
-            <div class="inner">
-              <h3>{{ render(controller('StockBundle:Stock:getNombreStock')) }}</h3>
-
-              <p>Nombre de produits en stock</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-pie-graph"></i>
-            </div>
-            <a href="{{path('stock_liste')}}" class="small-box-footer">Plus d'info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-      </div>
-      {% endif %}
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-              {%block body%}
-
-              {%endblock%}
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </div>
-  <!-- /.content-wrapper -->
-
-  <!-- Main Footer
-  <footer class="main-footer">
-
-    <div class="pull-right hidden-xs">
+        </section>
 
     </div>
+    <!-- /.content-wrapper -->
 
-    <strong><a href="#">By RMAG TECH </a>&copy; 2019.</strong>
-  </footer>
-  -->
-  <!-- Control Sidebar -->
-   <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Create the tabs -->
-    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-      <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-     <!-- <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>-->
-    </ul>
-    <!-- Tab panes -->
-    <div class="tab-content">
-      <!-- Home tab content -->
-      <div class="tab-pane" id="control-sidebar-home-tab">
-        <h3 class="control-sidebar-heading">Recent Activity</h3>
-        <ul class="control-sidebar-menu">
-          <li>
-            <a href="javascript:void(0)">
-              <i class="menu-icon fa fa-birthday-cake bg-red"></i>
+    <!-- Main Footer
+    <footer class="main-footer">
 
-              <div class="menu-info">
-                <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
-
-                <p>Will be 23 on April 24th</p>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:void(0)">
-              <i class="menu-icon fa fa-user bg-yellow"></i>
-
-              <div class="menu-info">
-                <h4 class="control-sidebar-subheading">Frodo Updated His Profile</h4>
-
-                <p>New phone +1(800)555-1234</p>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:void(0)">
-              <i class="menu-icon fa fa-envelope-o bg-light-blue"></i>
-
-              <div class="menu-info">
-                <h4 class="control-sidebar-subheading">Nora Joined Mailing List</h4>
-
-                <p>nora@example.com</p>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:void(0)">
-              <i class="menu-icon fa fa-file-code-o bg-green"></i>
-
-              <div class="menu-info">
-                <h4 class="control-sidebar-subheading">Cron Job 254 Executed</h4>
-
-                <p>Execution time 5 seconds</p>
-              </div>
-            </a>
-          </li>
-        </ul>
-        <!-- /.control-sidebar-menu -->
-
-        <h3 class="control-sidebar-heading">Tasks Progress</h3>
-        <ul class="control-sidebar-menu">
-          <li>
-            <a href="javascript:void(0)">
-              <h4 class="control-sidebar-subheading">
-                Custom Template Design
-                <span class="label label-danger pull-right">70%</span>
-              </h4>
-
-              <div class="progress progress-xxs">
-                <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:void(0)">
-              <h4 class="control-sidebar-subheading">
-                Update Resume
-                <span class="label label-success pull-right">95%</span>
-              </h4>
-
-              <div class="progress progress-xxs">
-                <div class="progress-bar progress-bar-success" style="width: 95%"></div>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:void(0)">
-              <h4 class="control-sidebar-subheading">
-                Laravel Integration
-                <span class="label label-warning pull-right">50%</span>
-              </h4>
-
-              <div class="progress progress-xxs">
-                <div class="progress-bar progress-bar-warning" style="width: 50%"></div>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:void(0)">
-              <h4 class="control-sidebar-subheading">
-                Back End Framework
-                <span class="label label-primary pull-right">68%</span>
-              </h4>
-
-              <div class="progress progress-xxs">
-                <div class="progress-bar progress-bar-primary" style="width: 68%"></div>
-              </div>
-            </a>
-          </li>
-        </ul>
-        <!-- /.control-sidebar-menu -->
+      <div class="pull-right hidden-xs">
 
       </div>
-      <!-- /.tab-pane -->
-      <!-- Stats tab content -->
-      <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
-      <!-- /.tab-pane -->
-      <!-- Settings tab content -->
-      <div class="tab-pane" id="control-sidebar-settings-tab">
-        <form method="post">
-          <h3 class="control-sidebar-heading">General Settings</h3>
 
-          <div class="form-group">
-            <label class="control-sidebar-subheading">
-              Report panel usage
-              <input type="checkbox" class="pull-right" checked>
-            </label>
+      <strong><a href="#">By RMAG TECH </a>&copy; 2019.</strong>
+    </footer>
+    -->
+    <!-- Control Sidebar -->
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Create the tabs -->
+        <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+            <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+            <!-- <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>-->
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <!-- Home tab content -->
+            <div class="tab-pane" id="control-sidebar-home-tab">
+                <h3 class="control-sidebar-heading">Recent Activity</h3>
+                <ul class="control-sidebar-menu">
+                    <li>
+                        <a href="javascript:void(0)">
+                            <i class="menu-icon fa fa-birthday-cake bg-red"></i>
 
-            <p>
-              Some information about this general settings option
-            </p>
-          </div>
-          <!-- /.form-group -->
+                            <div class="menu-info">
+                                <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
 
-          <div class="form-group">
-            <label class="control-sidebar-subheading">
-              Allow mail redirect
-              <input type="checkbox" class="pull-right" checked>
-            </label>
+                                <p>Will be 23 on April 24th</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)">
+                            <i class="menu-icon fa fa-user bg-yellow"></i>
 
-            <p>
-              Other sets of options are available
-            </p>
-          </div>
-          <!-- /.form-group -->
+                            <div class="menu-info">
+                                <h4 class="control-sidebar-subheading">Frodo Updated His Profile</h4>
 
-          <div class="form-group">
-            <label class="control-sidebar-subheading">
-              Expose author name in posts
-              <input type="checkbox" class="pull-right" checked>
-            </label>
+                                <p>New phone +1(800)555-1234</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)">
+                            <i class="menu-icon fa fa-envelope-o bg-light-blue"></i>
 
-            <p>
-              Allow the user to show his name in blog posts
-            </p>
-          </div>
-          <!-- /.form-group -->
+                            <div class="menu-info">
+                                <h4 class="control-sidebar-subheading">Nora Joined Mailing List</h4>
 
-          <h3 class="control-sidebar-heading">Chat Settings</h3>
+                                <p>nora@example.com</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)">
+                            <i class="menu-icon fa fa-file-code-o bg-green"></i>
 
-          <div class="form-group">
-            <label class="control-sidebar-subheading">
-              Show me as online
-              <input type="checkbox" class="pull-right" checked>
-            </label>
-          </div>
-          <!-- /.form-group -->
+                            <div class="menu-info">
+                                <h4 class="control-sidebar-subheading">Cron Job 254 Executed</h4>
 
-          <div class="form-group">
-            <label class="control-sidebar-subheading">
-              Turn off notifications
-              <input type="checkbox" class="pull-right">
-            </label>
-          </div>
-          <!-- /.form-group -->
+                                <p>Execution time 5 seconds</p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <!-- /.control-sidebar-menu -->
 
-          <div class="form-group">
-            <label class="control-sidebar-subheading">
-              Delete chat history
-              <a href="javascript:void(0)" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
-            </label>
-          </div>
-          <!-- /.form-group -->
-        </form>
-      </div>
-      <!-- /.tab-pane -->
-    </div>
-  </aside>
-  <!-- /.control-sidebar -->
-  <!-- /.control-sidebar -->
-  <!-- Add the sidebar's background. This div must be placed
-       immediately after the control sidebar -->
-  <div class="control-sidebar-bg"></div>
+                <h3 class="control-sidebar-heading">Tasks Progress</h3>
+                <ul class="control-sidebar-menu">
+                    <li>
+                        <a href="javascript:void(0)">
+                            <h4 class="control-sidebar-subheading">
+                                Custom Template Design
+                                <span class="label label-danger pull-right">70%</span>
+                            </h4>
+
+                            <div class="progress progress-xxs">
+                                <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)">
+                            <h4 class="control-sidebar-subheading">
+                                Update Resume
+                                <span class="label label-success pull-right">95%</span>
+                            </h4>
+
+                            <div class="progress progress-xxs">
+                                <div class="progress-bar progress-bar-success" style="width: 95%"></div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)">
+                            <h4 class="control-sidebar-subheading">
+                                Laravel Integration
+                                <span class="label label-warning pull-right">50%</span>
+                            </h4>
+
+                            <div class="progress progress-xxs">
+                                <div class="progress-bar progress-bar-warning" style="width: 50%"></div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)">
+                            <h4 class="control-sidebar-subheading">
+                                Back End Framework
+                                <span class="label label-primary pull-right">68%</span>
+                            </h4>
+
+                            <div class="progress progress-xxs">
+                                <div class="progress-bar progress-bar-primary" style="width: 68%"></div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <!-- /.control-sidebar-menu -->
+
+            </div>
+            <!-- /.tab-pane -->
+            <!-- Stats tab content -->
+            <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
+            <!-- /.tab-pane -->
+            <!-- Settings tab content -->
+            <div class="tab-pane" id="control-sidebar-settings-tab">
+                <form method="post">
+                    <h3 class="control-sidebar-heading">General Settings</h3>
+
+                    <div class="form-group">
+                        <label class="control-sidebar-subheading">
+                            Report panel usage
+                            <input type="checkbox" class="pull-right" checked>
+                        </label>
+
+                        <p>
+                            Some information about this general settings option
+                        </p>
+                    </div>
+                    <!-- /.form-group -->
+
+                    <div class="form-group">
+                        <label class="control-sidebar-subheading">
+                            Allow mail redirect
+                            <input type="checkbox" class="pull-right" checked>
+                        </label>
+
+                        <p>
+                            Other sets of options are available
+                        </p>
+                    </div>
+                    <!-- /.form-group -->
+
+                    <div class="form-group">
+                        <label class="control-sidebar-subheading">
+                            Expose author name in posts
+                            <input type="checkbox" class="pull-right" checked>
+                        </label>
+
+                        <p>
+                            Allow the user to show his name in blog posts
+                        </p>
+                    </div>
+                    <!-- /.form-group -->
+
+                    <h3 class="control-sidebar-heading">Chat Settings</h3>
+
+                    <div class="form-group">
+                        <label class="control-sidebar-subheading">
+                            Show me as online
+                            <input type="checkbox" class="pull-right" checked>
+                        </label>
+                    </div>
+                    <!-- /.form-group -->
+
+                    <div class="form-group">
+                        <label class="control-sidebar-subheading">
+                            Turn off notifications
+                            <input type="checkbox" class="pull-right">
+                        </label>
+                    </div>
+                    <!-- /.form-group -->
+
+                    <div class="form-group">
+                        <label class="control-sidebar-subheading">
+                            Delete chat history
+                            <a href="javascript:void(0)" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
+                        </label>
+                    </div>
+                    <!-- /.form-group -->
+                </form>
+            </div>
+            <!-- /.tab-pane -->
+        </div>
+    </aside>
+    <!-- /.control-sidebar -->
+    <!-- /.control-sidebar -->
+    <!-- Add the sidebar's background. This div must be placed
+         immediately after the control sidebar -->
+    <div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
 
@@ -600,27 +650,36 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 <!-- jQuery 2.2.3 -->
 <script src="{{ asset('templates/plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
-<!-- Bootstrap 3.3.6 -->
 <script src="{{ asset('templates/bootstrap/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('templates/bower_components/select2/dist/js/select2.full.min.js') }}"></script>
+
+<script src="{{ asset('templates/bower_components/jquery-slimscroll/jquery.slimscroll.min.js') }}"></script>
+<script src="{{ asset('templates/bower_components/fastclick/lib/fastclick.js') }}"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="{{ asset('templates/chart.js') }}"></script>
+<script src="{{ asset('templates/canvas.min.js') }}"></script>
 <!--<script src="{{ asset('templates/bootstrap/js/mdb.min.js') }}"></script>
 <script src="{{ asset('templates/bootstrap/js/mdb.js') }}"></script>
 <script src="{{ asset('templates/bootstrap/js/popper.js') }}"></script>-->
-{%block partieJs%}
 
-{%endblock%}
 <!-- AdminLTE App -->
+<script src="{{ asset('templates/rmagdatatable.js') }}"></script>
 <script src="{{ asset('templates/dist/js/app.min.js') }}"></script>
-<script src="{{ asset('templates/plugins/datatables/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('templates/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
-<script src="{{ asset('templates/agritech.js') }}">
-<script src="{{ asset('templates/plugins/flot/jquery.flot.pie.min.js') }}">
+<script src="{{ asset('templates/plugins/flot/jquery.flot.pie.min.js') }}"></script>
+<!-- page specific plugin scripts -->
+<script src="{{ asset('template/assets/js/jquery.dataTables.min.js')}}"></script>
+<script src="{{ asset('template/assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
+<script src="{{ asset('template/assets/js/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('template/assets/js/buttons.flash.min.js') }}"></script>
+<script src="{{ asset('template/assets/js/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('template/assets/js/buttons.print.min.js') }}"></script>
+<script src="{{ asset('template/assets/js/buttons.colVis.min.js') }}"></script>
+<script src="{{ asset('template/assets/js/dataTables.select.min.js') }}"></script>
 
-
-<script src="{{ asset('templates/highcharts/highcharts.js') }}">
-<script src="{{ asset('templates/highcharts/modules/exporting.js') }}">
-<script src="{{ asset('templates/highcharts/modules/export-data.js') }}">
-
-
+<script src="{{ asset('templates/highcharts/highcharts.js') }}"></script>
+<script src="{{ asset('templates/highcharts/modules/exporting.js') }}"></script>
+<script src="{{ asset('templates/highcharts/modules/export-data.js') }}"></script>
+<script src="{{ asset('template/assets/js/dataTables.select.min.js') }}"></script>
 
 </body>
 </html>
